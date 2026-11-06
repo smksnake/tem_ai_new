@@ -1,81 +1,45 @@
-# Tem Aí? Tem Aqui! — Plataforma Web de Inclusão Digital e Gestão Simplificada para Pequenos Comerciantes
+# Tem aí? Tem Aqui! — O que você procura, pode estar pertinho de você!
 
-> **Projeto Integrador II — UNIVESP (Universidade Virtual do Estado de São Paulo)**  
-> **Curso:** Engenharia da Computação  
-> **Polo:** CEU Heliópolis  
-> **Tutor:** Yeison David Correa Cuellar  
-> **Estudo de Caso:** Banca Bueno (Sr. Renato) — Comércio tradicional com aproximadamente 40 anos de história  
+Plataforma digital para consulta de disponibilidade e reserva de produtos em pequenos comércios locais, conectando consumidores e pequenos lojistas da comunidade.
 
 ---
 
-## 🎯 Sobre o Projeto
+## 🚀 Principais Funcionalidades
 
-O **"Tem Aí? Tem Aqui!"** é um protótipo de software web desenvolvido para solucionar a dor dos picos de demanda em pequenos comércios de bairro (como lançamentos de álbuns de figurinhas da Copa do Mundo, revistas e jornais), evitando deslocamentos desnecessários e frustração dos clientes.
+### 1. Visão do Cliente
+* **Busca Inteligente com Autocomplete:** Encontre produtos, lojas ou categorias em tempo real.
+* **Categorias em Destaque:** Acesso rápido a *Lançamentos (★)*, *Livros e revistas (📖)*, *Figurinhas (⚽)*, *Games e colecionáveis (🎮)*, *Papelaria (✏️)*, *Presentes (🎁)* e *E muito mais!*.
+* **Status em Tempo Real:** Sinalizador visual instantâneo (*"✓ Disponível"* ou *"Esgotado"*).
+* **Mapa de Comércios do Bairro:** Mini-mapa lateral e mapa completo ampliado com endereços reais e distâncias calculadas.
+* **Reserva com Voucher:**
+  * **Exclusiva para clientes logados:** Proteção contra reservas anônimas.
+  * Seleção de quantidade com cálculo do valor estimado total.
+  * Geração imediata do código de retirada em destaque (ex.: **`#4587`**).
+  * Canal direto via **WhatsApp** com o lojista com mensagem pré-configurada.
+* **Minhas Reservas:** Acompanhamento de vouchers com separação entre abas *Ativas* e *Histórico*, com cancelamento estornando o estoque.
 
-O grande diferencial de engenharia da solução reside na **inclusão digital**: combater a barreira tecnológica que afeta comerciantes mais velhos (como o Sr. Renato). A interface do lojista foi projetada com base nos princípios de **Interação Humano-Computador (IHC) e Usabilidade (CYBIS, BETIOL e FAUST, 2010)**, substituindo telas burocráticas de PDV/ERP por botões de toque amplo, alto contraste e fluxos executados em **no máximo três cliques**.
+### 2. Modo Comerciante (Acesso Restrito)
+* **Visível apenas para comerciantes logados:** Acesso seguro com e-mail e senha.
+* **Painel da Loja com 3 Grandes Botões de Ação:**
+  1. ➕ **Cadastrar produto ou disponibilidade:** Cadastro rápido com título, categoria, estoque inicial e **upload de imagem do produto**.
+  2. 📦 **Meus produtos e reservas:** Controle ágil de estoque com botões `+` e `−` em um toque.
+  3. 📊 **Ver estatísticas (vendas e acessos):** Produtos mais procurados e volume de reservas atendidas.
+* **Cadastro de Novos Comércios:** Inclusão de Nome do Comércio, Categoria, WhatsApp e **Endereço Real Completo**, com georreferenciamento no mapa.
+* **Edição de Dados:** Possibilidade de atualizar nome, categoria, telefone e endereço real a qualquer momento.
+* **Gestão de Reservas no Balcão:** Vouchers dos clientes organizados em abas (*Todas*, *A retirar*, *Retiradas*) com confirmação de entrega em um clique.
 
----
-
-## 📱 Funcionalidades Implementadas
-
-### 1. Visão do Cliente (Desktop e Mobile — Figuras 1 e 2 do Relatório Parcial)
-- **Catálogo de Alta Demanda:** Consulta em tempo real de produtos da Banca Bueno e parceiros (Papelaria da Praça, Livraria do Bairro).
-- **Busca Inteligente com Autocompletar:** Localização instantânea por nome, categoria ou loja.
-- **Filtro Rápido por Categorias:** Figurinhas, Livros e Revistas, Lançamentos, Papelaria, Colecionáveis.
-- **Sinalizador de Disponibilidade:** Indicação imediata de status (*"Disponível · 15 un."* ou *"Esgotado"*).
-- **Mapa do Bairro Integrado:** Mini-mapa lateral e mapa interativo ampliado de Heliópolis com distâncias aproximadas (300m, 750m, 1.2km).
-- **Fluxo de Reserva Garantida:**
-  - Tela detalhada do produto.
-  - Seleção de quantidade com ajuste de valor estimado.
-  - **Geração de Voucher Destacado (ex.: `#4587`):** Código de 4 dígitos para retirada rápida na banca sem filas.
-  - **Integração com WhatsApp:** Botão direto com mensagem pré-formatada pronta para envio ao comerciante.
-  - **Área Minhas Reservas:** Separação entre reservas ativas e histórico, com opção de cancelamento (estornando o estoque).
-
-### 2. Visão do Comerciante (Sr. Renato — IHC & Baixa Fluência Digital — Figura 2)
-- **Painel Acessível com 4 Grandes Botões de Ação Direta:**
-  1. ➕ **Cadastrar Produto ou Disponibilidade:** Formulário simplificado em poucos segundos.
-  2. 📦 **Meus Produtos e Estoque Rápido:** Controle com botões gigantes `+` e `−` (1 clique para atualizar).
-  3. 📋 **Reservas Recebidas:** Lista de vouchers para confirmação de entrega presencial.
-  4. 📊 **Estatísticas da Banca:** Métricas humanas (itens mais procurados pelos vizinhos).
-- **Baixa e Reposição em 1 Toque:** Possibilidade de zerar o estoque ou adicionar unidades instantaneamente.
-- **Comunicação Direta com o Cliente:** Envio de mensagem pelo WhatsApp para avisar sobre a retirada.
-
-### 3. Recursos Acadêmicos & Demonstração (UNIVESP)
-- **Barra Superior de Controle Acadêmico:**
-  - 🔄 **Alternar Modo:** Troca imediata entre a visão do cliente e a visão do Sr. Renato.
-  - 📱 **Simulador de Celular:** Transforma a interface na moldura de um smartphone na própria tela do navegador, facilitando a gravação do vídeo de apresentação (Quinzena 6).
-  - 🔄 **Restaurar Dados:** Restaura o estado inicial de demonstração caso você faça testes de cancelamento ou edição.
+### 3. Modos de Visualização
+* **Modo Celular:** Simulação visual idêntica à tela de um smartphone com layout mobile completo.
+* **Modo Computador:** Visualização expandida em desktop com navegação lateral e widgets de mapa e reservas.
 
 ---
 
-## 🚀 Como Executar
+## 🛠️ Como Executar
 
-O projeto foi construído com tecnologias web puras (**HTML5 semântico, CSS3 moderno e JavaScript ES6+**), sem a necessidade de instalar Node.js, compiladores ou servidores complexos.
+O projeto foi construído em **HTML5, CSS3 e JavaScript puro**, persistindo os dados no `localStorage` do navegador sem a necessidade de instalar dependências ou rodar servidores:
 
-1. **Abra o arquivo `index.html` em qualquer navegador moderno** (Google Chrome, Microsoft Edge, Firefox, Safari):
-   - Basta dar um duplo clique em `index.html`, ou
-   - Clicar com o botão direito e escolher *"Abrir com > Google Chrome"*.
-2. Caso use o **Visual Studio Code**, você pode instalar a extensão **Live Server** e clicar em *"Go Live"*.
-
----
-
-## 🎬 Roteiro Sugerido para o Vídeo de Apresentação (Quinzena 6)
-
-1. **Abertura (30s):** Apresentação do grupo, polo Heliópolis e o tema: inclusão digital de pequenos comércios e o estudo de caso da Banca Bueno.
-2. **Visão do Cliente (1m):**
-   - Mostrar a tela inicial e buscar por *"Álbum"*.
-   - Clicar no produto *"Álbum de Figurinhas Copa 2026"*.
-   - Fazer uma reserva e mostrar a geração do **código `#4587`** e o botão do WhatsApp.
-3. **Visão do Comerciante (1m30s):**
-   - Clicar em *"Ver Modo Comerciante (Sr. Renato)"*.
-   - Destacar os botões grandes e o alto contraste pensados para idosos (IHC).
-   - Ajustar o estoque do Álbum usando os botões `+` e `−`.
-   - Abrir as *"Reservas Recebidas"*, localizar a reserva recém-feita e clicar em *"Confirmar Entrega ao Cliente"*.
-4. **Fechamento (30s):** Ressaltar o impacto social da digitalização acessível e o cumprimento do plano de ação do PI II.
-
----
-
-## 📚 Referências Bibliográficas
-
-- **CYBIS, W. A.; BETIOL, A. H.; FAUST, R.** *Ergonomia e Usabilidade: Conhecimentos, Métodos e Aplicações*. 2. ed. São Paulo: Novatec Editora, 2010.
-- **SEBRAE.** *Transformação Digital para Micro e Pequenas Empresas*. Serviço Brasileiro de Apoio às Micro e Pequenas Empresas. Brasília: SEBRAE, 2021.
+1. Abra a pasta `tem_ai_tem_aqui`.
+2. Dê um duplo clique no arquivo **`index.html`** no seu navegador favorito (Google Chrome, Microsoft Edge, Firefox, Safari).
+3. Para testar:
+   * **Como Cliente:** Clique em *"Entrar"* e use o botão *"Entrar como Cliente Demonstração"*, ou crie uma conta nova.
+   * **Como Comerciante:** Clique em *"Sou Comerciante"* e use o botão *"Entrar como Banca do Renato"*, ou cadastre uma nova loja com seu endereço real.

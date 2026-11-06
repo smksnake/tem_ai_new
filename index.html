@@ -3,114 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tem aí? Tem Aqui! — Plataforma de Consulta e Reserva Local</title>
-  <meta name="description" content="Inclusão Digital e Gestão Simplificada para Pequenos Comerciantes. Estudo de caso: Banca Bueno. Projeto Integrador UNIVESP.">
+  <title>Tem aí? Tem Aqui! — O que você procura, pode estar pertinho de você!</title>
+  <meta name="description" content="Plataforma de consulta de disponibilidade e reserva em pequenos comércios locais.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="js/app.js" defer></script>
 </head>
 <body>
-  <!-- BARRA DE CONTROLE DO PROTÓTIPO ACADÊMICO (UNIVESP PI) -->
-  <aside class="academic-badge-bar" aria-label="Controles acadêmicos do protótipo">
-    <div class="academic-container">
-      <div class="academic-info">
-        <span class="badge-univesp">UNIVESP · PI II</span>
-        <span class="academic-text">Projeto Integrador: <strong>Tem Aí? Tem Aqui!</strong> (Estudo de Caso: Banca Bueno)</span>
+
+  <!-- BARRA DE UTILITÁRIOS SUPERIOR (MODOS DE VISUALIZAÇÃO E ACESSO RÁPIDO) -->
+  <aside class="platform-utility-bar" aria-label="Controles da plataforma">
+    <div class="utility-container">
+      <div class="utility-left">
+        <span class="utility-badge">🏪 Rede de Comércio Local</span>
+        <span class="utility-tagline">Conectando vizinhos e pequenos lojistas</span>
       </div>
-      <div class="academic-actions">
-        <button id="toggle-device-btn" class="academic-btn" title="Simular visualização de tela mobile ou desktop">
-          <span class="btn-icon">📱</span> <span class="btn-text">Simular Celular</span>
+      <div class="utility-right">
+        <!-- Botão comutador de visualização Celular / Computador -->
+        <button id="device-toggle-btn" class="utility-btn mode-btn" title="Alternar entre visualização de celular e computador">
+          <span class="btn-icon">📱</span> <span id="device-mode-label">Modo Celular</span>
         </button>
-        <button id="quick-switch-merchant-btn" class="academic-btn primary-switch" title="Alternar rapidamente entre Visão do Cliente e Visão do Comerciante">
-          <span class="btn-icon">🔄</span> <span class="switch-label">Ver Modo Comerciante (Sr. Renato)</span>
-        </button>
-        <button id="reset-demo-btn" class="academic-btn text-only" title="Restaurar dados originais para teste">
-          Restaurar Dados
-        </button>
+        <!-- Acesso rápido de login / perfil -->
+        <div id="auth-quick-actions" class="utility-auth-group">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
       </div>
     </div>
   </aside>
 
-  <!-- CONTÊINER PRINCIPAL (SUPORTA MODO DESKTOP E MODO MOLDURA MOBILE) -->
+  <!-- CONTÊINER DO DISPOSITIVO (MODO COMPUTADOR OU MODO CELULAR) -->
   <div id="device-wrapper" class="device-standard">
     <div class="app-frame">
 
       <!-- CABEÇALHO PRINCIPAL DA PLATAFORMA (TOPBAR) -->
       <header class="topbar">
         <div class="topbar-left">
-          <a class="brand" href="#" id="brand-logo" aria-label="Tem aí? Tem Aqui! início">
-            <span class="brand-pin" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+          <!-- LOGOTIPO IDÊNTICO AO ESBOÇO -->
+          <a class="brand" href="#" id="brand-logo" aria-label="Tem aí? Tem Aqui! Página inicial">
+            <div class="brand-pin-logo">
+              <!-- Pin Azul com Toldinho de Loja Amarelo/Laranja -->
+              <svg width="42" height="42" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pin Base -->
+                <path d="M24 2C13.5 2 5 10.5 5 21C5 33 24 46 24 46C24 46 43 33 43 21C43 10.5 34.5 2 24 2Z" fill="#074EA6"/>
+                <!-- Fachada da Loja Branca -->
+                <rect x="14" y="19" width="20" height="13" rx="2" fill="#FFFFFF"/>
+                <rect x="21" y="24" width="6" height="8" rx="1" fill="#074EA6"/>
+                <rect x="16" y="24" width="3" height="4" rx="0.5" fill="#CBD5E1"/>
+                <rect x="29" y="24" width="3" height="4" rx="0.5" fill="#CBD5E1"/>
+                <!-- Toldo de Loja Amarelo com Listras Laranja -->
+                <path d="M12 18L14 13H34L36 18H12Z" fill="#FFB703"/>
+                <path d="M18 13L17 18H21L21 13H18Z" fill="#FB8500"/>
+                <path d="M27 13L27 18H31L30 13H27Z" fill="#FB8500"/>
+                <!-- Ondulações do Toldo -->
+                <circle cx="14" cy="18" r="2" fill="#FFB703"/>
+                <circle cx="18" cy="18" r="2" fill="#FB8500"/>
+                <circle cx="22" cy="18" r="2" fill="#FFB703"/>
+                <circle cx="26" cy="18" r="2" fill="#FB8500"/>
+                <circle cx="30" cy="18" r="2" fill="#FFB703"/>
+                <circle cx="34" cy="18" r="2" fill="#FB8500"/>
               </svg>
-            </span>
-            <span class="brand-text">Tem aí?<strong> Tem Aqui!</strong></span>
+            </div>
+            <div class="brand-text-group">
+              <span class="brand-title">Tem aí?</span>
+              <span class="brand-subtitle">Tem Aqui!</span>
+              <div class="brand-curve-underline"></div>
+            </div>
           </a>
         </div>
 
+        <!-- BARRA DE PESQUISA CENTRAL -->
         <div class="top-search" role="search">
           <label class="sr-only" for="search-input">Buscar produto, loja ou categoria</label>
           <div class="search-input-wrapper">
             <span class="search-icon" aria-hidden="true">🔍</span>
-            <input id="search-input" type="search" placeholder="Buscar produto, banca, categoria..." autocomplete="off">
+            <input id="search-input" type="search" placeholder="Buscar produto, loja ou categoria..." autocomplete="off">
             <button id="clear-search-btn" class="clear-search hidden" aria-label="Limpar busca">×</button>
           </div>
           <!-- Sugestões rápidas de busca -->
           <div id="search-suggestions" class="search-suggestions hidden"></div>
         </div>
 
+        <!-- ÁREA DIREITA DO CABEÇALHO -->
         <div class="topbar-right">
-          <!-- Seletor de Localização -->
-          <button class="location-pill" id="location-btn" title="Alterar ou ver localização atual">
-            <span class="loc-icon">📍</span>
-            <span class="loc-text">São Paulo - SP · <strong>Heliópolis</strong></span>
-          </button>
-
-          <!-- Perfil do Usuário / Indicador de Modo -->
-          <div class="user-pill" id="current-user-badge">
-            <span class="user-avatar" id="user-avatar">👤</span>
-            <span class="user-label" id="user-label">Olá, Cliente</span>
+          <!-- Localização Atual -->
+          <div class="location-pill" id="location-selector" title="Localização do usuário">
+            <span class="loc-pin">📍</span>
+            <div class="loc-details">
+              <span class="loc-label">Minha localização</span>
+              <strong class="loc-val">São Paulo - SP <span class="loc-arrow">⌄</span></strong>
+            </div>
           </div>
 
-          <!-- Botão Principal de Alternância de Perfil (Cliente <-> Comerciante) -->
-          <button id="header-mode-toggle" class="header-mode-btn" type="button">
-            Área do Comerciante
+          <!-- Ícone de Notificação com Badge -->
+          <button class="icon-notification-btn" id="notifications-btn" title="Notificações">
+            <span class="bell-icon">🔔</span>
+            <span class="notif-badge">2</span>
           </button>
+
+          <!-- Perfil do Usuário / Botões de Login -->
+          <div id="user-header-profile" class="user-header-profile">
+            <!-- Atualizado dinamicamente pelo JS -->
+          </div>
         </div>
       </header>
 
-      <!-- BARRA DE NAVEGAÇÃO MOBILE (BOTTOM NAV) -->
-      <nav class="mobile-bottom-nav" aria-label="Navegação em celular">
-        <!-- Itens de Cliente -->
-        <button class="mob-nav-item active" data-nav="client-home">
-          <span class="mob-icon">🏠</span>
-          <span class="mob-label">Início</span>
-        </button>
-        <button class="mob-nav-item" data-nav="client-products">
-          <span class="mob-icon">🔍</span>
-          <span class="mob-label">Produtos</span>
-        </button>
-        <button class="mob-nav-item" data-nav="client-reservations">
-          <span class="mob-icon">📋</span>
-          <span class="mob-label">Reservas</span>
-          <span class="nav-badge hidden" id="mob-res-count">0</span>
-        </button>
-        <button class="mob-nav-item" data-nav="merchant-hub">
-          <span class="mob-icon">🏪</span>
-          <span class="mob-label">Sr. Renato</span>
-        </button>
+      <!-- BARRA DE NAVEGAÇÃO MOBILE (BOTTOM NAV - ESBOÇO CELULAR) -->
+      <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navegação em celular">
+        <!-- Renderizado dinamicamente pelo JS conforme perfil logado -->
       </nav>
 
-      <!-- LAYOUT PRINCIPAL -->
+      <!-- CORPO PRINCIPAL DO SISTEMA -->
       <div class="app-layout">
 
-        <!-- BARRA LATERAL (VISÃO DESKTOP - FIGURA 1 DO RELATÓRIO) -->
+        <!-- BARRA LATERAL ESQUERDA (DESKTOP - ESBOÇO FIGURA 1) -->
         <aside class="app-sidebar" id="app-sidebar" aria-label="Menu Lateral">
           <div class="sidebar-menu">
             <button class="side-nav-item active" data-nav="client-home">
-              <span class="side-icon">⌂</span>
+              <span class="side-icon">🏠</span>
               <span>Início</span>
             </button>
             <button class="side-nav-item" data-nav="client-products">
@@ -119,94 +130,103 @@
             </button>
             <button class="side-nav-item" data-nav="client-stores">
               <span class="side-icon">🏪</span>
-              <span>Lojas do Bairro</span>
+              <span>Lojas</span>
             </button>
-            <button class="side-nav-item" data-nav="client-reservations">
-              <span class="side-icon">▣</span>
-              <span>Minhas Reservas</span>
-              <span class="nav-counter-pill hidden" id="side-res-count">0</span>
+            <button class="side-nav-item" data-nav="client-reservations" id="side-nav-reservations">
+              <span class="side-icon">📋</span>
+              <span>Minhas reservas</span>
+              <span class="nav-counter-pill hidden" id="side-res-badge">0</span>
             </button>
-            <button class="side-nav-item side-nav-merchant" data-nav="merchant-hub">
+            <button class="side-nav-item" data-nav="user-profile" id="side-nav-profile">
+              <span class="side-icon">👤</span>
+              <span>Perfil</span>
+            </button>
+            <!-- Link do Comerciante (visível apenas quando logado como comerciante) -->
+            <button class="side-nav-item side-nav-merchant hidden" data-nav="merchant-dashboard" id="side-nav-merchant">
               <span class="side-icon">⚙️</span>
-              <span>Painel do Sr. Renato</span>
+              <span>Modo Comerciante</span>
             </button>
           </div>
 
-          <!-- Card de Apoio Social / Inclusão Comunitária -->
-          <div class="support-card">
-            <div class="support-icon">🤝</div>
-            <h3>Valorize o comércio local!</h3>
-            <p>Pequenos comércios fazem grandes diferenças na comunidade do bairro.</p>
-            <div class="banca-destaque">
-              <span>★ Ponto parceiro:</span>
-              <strong>Banca Bueno (Sr. Renato)</strong>
+          <!-- Card "Valorize o comércio local!" -->
+          <div class="support-local-card">
+            <div class="support-illustration">
+              <div class="store-icon-wrap">
+                <span class="support-store-icon">🏪</span>
+                <span class="support-heart-icon">💛</span>
+              </div>
             </div>
+            <h3>Valorize o comércio local!</h3>
+            <p>Pequenos comércios fazem grandes diferenças na nossa comunidade.</p>
           </div>
         </aside>
 
         <!-- ÁREA CENTRAL DE CONTEÚDO (MAIN) -->
         <main class="app-content" id="main-content" tabindex="-1">
-          <!-- Conteúdo dinâmico injetado via app.js -->
+          <!-- Renderizado dinamicamente pelo JS -->
         </main>
 
-        <!-- COLUNA DIREITA DE SUPORTE (DESKTOP - FIGURA 1 DO RELATÓRIO) -->
+        <!-- COLUNA LATERAL DIREITA (DESKTOP - ESBOÇO FIGURA 1) -->
         <aside class="app-aside-right" id="app-aside-right">
-          <!-- Mini Card de Mapa dos Comércios -->
-          <section class="side-card map-side-card">
+          
+          <!-- Widget: Comércios Próximos (Mapa do Esboço) -->
+          <section class="side-card map-widget-card">
             <div class="side-card-header">
               <div class="side-card-title">
                 <span class="icon">📍</span>
                 <h3>Comércios próximos</h3>
               </div>
             </div>
-            <div class="mini-map-preview" id="mini-map-trigger" role="button" tabindex="0" title="Clique para abrir o mapa interativo">
-              <div class="map-graphic">
-                <div class="map-grid-bg"></div>
-                <!-- Marcadores Simulados no Bairro -->
-                <div class="map-pin pin-banca" title="Banca Bueno (300m)">
-                  <span class="pin-dot">🏪</span>
-                  <span class="pin-tag">Banca Bueno (300m)</span>
+            <div class="map-preview-box" id="side-map-box">
+              <div class="map-street-canvas">
+                <div class="map-radar-center"></div>
+                <!-- Marcadores de Loja no Mapa -->
+                <div class="map-store-pin pin-1" title="Banca do Renato">
+                  <span>🏪</span>
                 </div>
-                <div class="map-pin pin-papelaria" title="Papelaria da Praça (750m)">
-                  <span class="pin-dot">✏️</span>
-                  <span class="pin-tag">Papelaria (750m)</span>
+                <div class="map-store-pin pin-2" title="Papelaria da Praça">
+                  <span>✏️</span>
                 </div>
-                <div class="map-pin pin-livraria" title="Livraria do Bairro (1.2km)">
-                  <span class="pin-dot">📚</span>
-                  <span class="pin-tag">Livraria (1.2km)</span>
+                <div class="map-store-pin pin-3" title="Livraria do Bairro">
+                  <span>📚</span>
                 </div>
-                <div class="map-radar-pulse"></div>
+                <div class="map-store-pin pin-4" title="Mercadinho do Zé">
+                  <span>🛒</span>
+                </div>
               </div>
-              <button class="btn-map-expand" type="button" id="btn-open-map">
-                🗺️ Ver mapa completo do bairro
+              <button class="btn-expand-map" id="btn-open-full-map" type="button">
+                <span>🗺️</span> Ver mapa completo
               </button>
             </div>
           </section>
 
-          <!-- Widget de Últimas Reservas -->
-          <section class="side-card reservations-side-card">
+          <!-- Widget: Suas Últimas Reservas -->
+          <section class="side-card recent-reservations-card" id="side-reservations-widget">
             <div class="side-card-header">
               <div class="side-card-title">
-                <span class="icon">🎟️</span>
+                <span class="icon">📋</span>
                 <h3>Suas últimas reservas</h3>
               </div>
-              <button class="link-small" id="btn-view-all-res">Ver todas</button>
             </div>
-            <div id="side-recent-reservations" class="side-recent-list">
-              <!-- Renderizado dinamicamente -->
+            <div id="side-reservations-list" class="side-reservations-list">
+              <!-- Renderizado via JS -->
+            </div>
+            <button class="btn-view-all-res" id="btn-side-view-all-res" type="button">
+              📋 Ver todas as reservas
+            </button>
+          </section>
+
+          <!-- Widget: Dica! -->
+          <section class="side-card tip-card">
+            <div class="tip-body">
+              <div class="tip-icon-bulb">💡</div>
+              <div class="tip-text">
+                <h4>Dica!</h4>
+                <p>Use a busca para encontrar produtos específicos ou explore as categorias. É rápido e fácil!</p>
+              </div>
             </div>
           </section>
 
-          <!-- Dica Rápida de Usabilidade -->
-          <section class="side-card tip-side-card">
-            <div class="tip-content">
-              <span class="tip-icon">💡</span>
-              <div>
-                <strong>Dica do Tem Aí!</strong>
-                <p>Use a busca para encontrar itens de grande procura como álbuns e figurinhas antes de sair de casa. Assim você economiza tempo e apoia a banca do seu bairro!</p>
-              </div>
-            </div>
-          </section>
         </aside>
 
       </div> <!-- fim .app-layout -->
@@ -214,9 +234,192 @@
     </div> <!-- fim .app-frame -->
   </div> <!-- fim #device-wrapper -->
 
-  <!-- ================= MODAIS E DIÁLOGOS ================= -->
 
-  <!-- MODAL: DETALHES DO PRODUTO (FIGURA 2 - MOBILE TELA 2) -->
+  <!-- =======================================================================
+       MODAIS DO SISTEMA
+       ======================================================================= -->
+
+  <!-- MODAL: LOGIN / CADASTRO DE CLIENTE -->
+  <dialog id="customer-auth-modal" class="app-modal auth-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="close-customer-auth" aria-label="Fechar">×</button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-cust-login">Entrar como Cliente</button>
+        <button class="auth-tab" id="tab-cust-register">Criar Conta de Cliente</button>
+      </div>
+
+      <!-- Formulário de Login Cliente -->
+      <form id="form-cust-login" class="auth-form active">
+        <p class="auth-intro">Entre com seu e-mail ou telefone para consultar e reservar produtos.</p>
+        <div class="form-group">
+          <label for="cust-login-email">E-mail ou Telefone / WhatsApp:</label>
+          <input type="text" id="cust-login-email" required placeholder="Ex.: maria@email.com ou 11987654321">
+        </div>
+        <div class="form-group">
+          <label for="cust-login-pass">Senha:</label>
+          <input type="password" id="cust-login-pass" required placeholder="Digite sua senha">
+        </div>
+        <button type="submit" class="btn-primary full-btn">Entrar como Cliente</button>
+        
+        <div class="quick-demo-login">
+          <span>Teste rápido:</span>
+          <button type="button" class="btn-quick-fill" id="btn-quick-customer">
+            👤 Entrar como Cliente Demonstração
+          </button>
+        </div>
+      </form>
+
+      <!-- Formulário de Cadastro Cliente -->
+      <form id="form-cust-register" class="auth-form">
+        <p class="auth-intro">Cadastre-se gratuitamente para reservar itens nos comércios da sua região.</p>
+        <div class="form-group">
+          <label for="cust-reg-name">Seu Nome Completo:</label>
+          <input type="text" id="cust-reg-name" required placeholder="Como prefere ser chamado">
+        </div>
+        <div class="form-group">
+          <label for="cust-reg-email">E-mail:</label>
+          <input type="email" id="cust-reg-email" required placeholder="seuemail@exemplo.com">
+        </div>
+        <div class="form-group">
+          <label for="cust-reg-phone">Telefone / WhatsApp (para aviso de retirada):</label>
+          <input type="tel" id="cust-reg-phone" required placeholder="(11) 98765-4321">
+        </div>
+        <div class="form-group">
+          <label for="cust-reg-pass">Crie uma Senha:</label>
+          <input type="password" id="cust-reg-pass" required placeholder="Mínimo de 4 dígitos">
+        </div>
+        <button type="submit" class="btn-primary full-btn">Cadastrar e Entrar</button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: LOGIN / CADASTRO DE COMERCIANTE -->
+  <dialog id="merchant-auth-modal" class="app-modal auth-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="close-merchant-auth" aria-label="Fechar">×</button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-merch-login">Acesso do Comerciante</button>
+        <button class="auth-tab" id="tab-merch-register">Cadastrar Novo Comércio</button>
+      </div>
+
+      <!-- Formulário de Login Comerciante -->
+      <form id="form-merch-login" class="auth-form active">
+        <p class="auth-intro">Acesse o painel da sua loja para gerenciar estoque, produtos e reservas.</p>
+        <div class="form-group">
+          <label for="merch-login-email">E-mail da Loja:</label>
+          <input type="email" id="merch-login-email" required placeholder="loja@exemplo.com">
+        </div>
+        <div class="form-group">
+          <label for="merch-login-pass">Senha:</label>
+          <input type="password" id="merch-login-pass" required placeholder="Sua senha de acesso">
+        </div>
+        <button type="submit" class="btn-primary full-btn">Acessar Modo Comerciante</button>
+
+        <div class="quick-demo-login">
+          <span>Teste rápido do lojista:</span>
+          <button type="button" class="btn-quick-fill" id="btn-quick-merchant">
+            🏪 Entrar como Banca do Renato
+          </button>
+        </div>
+      </form>
+
+      <!-- Formulário de Cadastro do Novo Comércio (com Endereço Real e Dados para o Mapa) -->
+      <form id="form-merch-register" class="auth-form">
+        <p class="auth-intro">Cadastre seu comércio para ser localizado pelos clientes no mapa e anunciar produtos.</p>
+        
+        <div class="form-group">
+          <label for="merch-reg-store-name">Nome do Comércio / Estabelecimento:</label>
+          <input type="text" id="merch-reg-store-name" required placeholder="Ex.: Banca Central, Papelaria São Jorge" maxlength="100">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="merch-reg-category">Categoria do Estabelecimento:</label>
+            <select id="merch-reg-category" required>
+              <option value="Banca de Jornal & Revistas">Banca de Jornal & Revistas</option>
+              <option value="Papelaria e Material Escolar">Papelaria e Material Escolar</option>
+              <option value="Livraria e Colecionáveis">Livraria e Colecionáveis</option>
+              <option value="Armarinho e Presentes">Armarinho e Presentes</option>
+              <option value="Conveniência e Utilidades">Conveniência e Utilidades</option>
+              <option value="Outros Comércios de Bairro">Outros Comércios de Bairro</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label for="merch-reg-phone">WhatsApp da Loja:</label>
+            <input type="tel" id="merch-reg-phone" required placeholder="(11) 98765-4321">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="merch-reg-address">Endereço Real Completo (Rua, Número, Bairro, Cidade):</label>
+          <input type="text" id="merch-reg-address" required placeholder="Ex.: Rua das Flores, 150 — Heliópolis, São Paulo - SP">
+          <small class="field-hint">Este endereço real será referenciado no mapa para os clientes encontrarem sua loja.</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="merch-reg-email">E-mail de Acesso:</label>
+            <input type="email" id="merch-reg-email" required placeholder="contato@minhaloja.com">
+          </div>
+          <div class="form-group flex-1">
+            <label for="merch-reg-pass">Senha:</label>
+            <input type="password" id="merch-reg-pass" required placeholder="Mínimo 4 dígitos">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary full-btn">Concluir Cadastro e Abrir Loja</button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: EDIÇÃO DOS DADOS DO COMÉRCIO (ENDEREÇO REAL, NOME, WHATSAPP) -->
+  <dialog id="merchant-edit-modal" class="app-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="close-merchant-edit" aria-label="Fechar">×</button>
+      <div class="modal-header">
+        <span class="modal-eyebrow">CONFIGURAÇÕES DA LOJA</span>
+        <h2>Editar Dados do Comércio</h2>
+        <p class="muted-info">Mantenha o endereço real e informações atualizadas para referência no mapa.</p>
+      </div>
+
+      <form id="form-merch-edit" class="modal-form">
+        <div class="form-group">
+          <label for="edit-store-name">Nome do Comércio:</label>
+          <input type="text" id="edit-store-name" required maxlength="100">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="edit-store-category">Categoria:</label>
+            <select id="edit-store-category" required>
+              <option value="Banca de Jornal & Revistas">Banca de Jornal & Revistas</option>
+              <option value="Papelaria e Material Escolar">Papelaria e Material Escolar</option>
+              <option value="Livraria e Colecionáveis">Livraria e Colecionáveis</option>
+              <option value="Armarinho e Presentes">Armarinho e Presentes</option>
+              <option value="Conveniência e Utilidades">Conveniência e Utilidades</option>
+              <option value="Outros Comércios de Bairro">Outros Comércios de Bairro</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label for="edit-store-phone">WhatsApp:</label>
+            <input type="tel" id="edit-store-phone" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-store-address">Endereço Real (exibido no mapa):</label>
+          <input type="text" id="edit-store-address" required>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="cancel-edit-store">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: DETALHES DO PRODUTO (ESBOÇO CELULAR TELA 2) -->
   <dialog id="product-detail-modal" class="app-modal product-modal">
     <div class="modal-content">
       <button class="modal-close" id="close-product-detail" aria-label="Fechar modal">×</button>
@@ -226,7 +429,7 @@
     </div>
   </dialog>
 
-  <!-- MODAL: FORMULÁRIO DE CONFIRMAÇÃO DE RESERVA -->
+  <!-- MODAL: FORMULÁRIO DE CONFIRMAÇÃO DE RESERVA (APENAS PARA CLIENTES LOGADOS) -->
   <dialog id="reserve-modal" class="app-modal reserve-form-modal">
     <div class="modal-content">
       <button class="modal-close" id="close-reserve-form" aria-label="Fechar modal">×</button>
@@ -237,13 +440,13 @@
       </div>
       <form id="reserve-submit-form" class="modal-form">
         <div class="form-group">
-          <label for="reserve-customer-name">Seu Nome Completo ou Como Quer Ser Chamado:</label>
-          <input type="text" id="reserve-customer-name" required placeholder="Ex.: Maria de Souza" maxlength="80">
+          <label for="reserve-customer-name">Seu Nome para Identificação na Loja:</label>
+          <input type="text" id="reserve-customer-name" required maxlength="80">
         </div>
         <div class="form-row">
           <div class="form-group flex-2">
-            <label for="reserve-customer-phone">Telefone / WhatsApp (para aviso):</label>
-            <input type="tel" id="reserve-customer-phone" placeholder="(11) 99999-9999">
+            <label for="reserve-customer-phone">Telefone / WhatsApp de Contato:</label>
+            <input type="tel" id="reserve-customer-phone" required>
           </div>
           <div class="form-group flex-1">
             <label for="reserve-qty-input">Quantidade:</label>
@@ -264,7 +467,7 @@
             <strong id="summary-total-price">R$ 0,00</strong>
           </div>
           <div class="summary-notice">
-            <span>ℹ️ O pagamento é feito presencialmente no comércio ao retirar o item. Não é necessário cartão agora!</span>
+            <span>ℹ️ O pagamento é efetuado presencialmente no comércio ao retirar o item. Nenhuma cobrança é feita agora!</span>
           </div>
         </div>
         <div class="modal-actions">
@@ -275,57 +478,51 @@
     </div>
   </dialog>
 
-  <!-- MODAL: RESERVA REALIZADA COM SUCESSO (FIGURA 2 - MOBILE TELA 3) -->
+  <!-- MODAL: RESERVA REALIZADA COM SUCESSO (ESBOÇO CELULAR TELA 3) -->
   <dialog id="reserve-success-modal" class="app-modal success-modal">
     <div class="modal-content text-center">
       <div class="success-icon-wrap">
         <div class="success-icon">✓</div>
       </div>
-      <span class="modal-eyebrow success-label">RESERVA CONFIRMADA COM SUCESSO!</span>
-      <h2 id="success-product-title">Seu item foi reservado!</h2>
+      <h2 id="success-product-title">Reserva realizada!</h2>
       <p id="success-store-info" class="store-highlight"></p>
       
-      <!-- Voucher / Código da Reserva Destacado (Estilo Figura 2) -->
+      <!-- Voucher / Código da Reserva Destacado (Esboço Celular Tela 3) -->
       <div class="voucher-box">
-        <span class="voucher-lead">Apresente este código na banca:</span>
-        <div class="voucher-code" id="success-voucher-code">#0000</div>
-        <span class="voucher-deadline" id="success-voucher-deadline">Retirar até sábado, 18:00</span>
+        <span class="voucher-lead">Leve o código da reserva:</span>
+        <div class="voucher-code" id="success-voucher-code">#4587</div>
+        <span class="voucher-deadline" id="success-voucher-deadline">Retire até: Sábado, 12/04</span>
       </div>
 
-      <p class="voucher-helper">
-        O Sr. Renato já separou o seu produto no estoque. Guarde este código para retirada rápida sem fila.
-      </p>
-
       <div class="success-actions">
+        <button type="button" class="btn-primary full-btn" id="success-home-btn">
+          Voltar para o início
+        </button>
         <!-- Botão WhatsApp com mensagem pré-configurada -->
-        <a id="success-whatsapp-link" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
-          <span class="wpp-icon">💬</span> Falar com o Comerciante via WhatsApp
+        <a id="success-whatsapp-link" class="btn-whatsapp-outline" target="_blank" rel="noopener noreferrer">
+          <span class="wpp-icon">💬</span> Falar com o comerciante
         </a>
-        <button type="button" class="btn-primary" id="success-finish-btn">
-          Ver Minhas Reservas
-        </button>
-        <button type="button" class="btn-text" id="success-home-btn">
-          Voltar para a Página Inicial
-        </button>
       </div>
     </div>
   </dialog>
 
-  <!-- MODAL: MAPA INTERATIVO AMPLIADO DOS COMÉRCIOS -->
+  <!-- MODAL: MAPA COMPLETO DOS COMÉRCIOS (ENDEREÇO REAL REFERENCIADO) -->
   <dialog id="map-modal" class="app-modal map-fullscreen-modal">
     <div class="modal-content map-modal-content">
       <button class="modal-close" id="close-map-modal" aria-label="Fechar mapa">×</button>
       <div class="modal-header">
-        <h2>Mapa dos Pequenos Comércios — Heliópolis</h2>
-        <p class="muted-info">Consulte os pontos físicos cadastrados na rede de apoio local.</p>
+        <span class="modal-eyebrow">LOCALIZAÇÃO DOS ESTABELECIMENTOS</span>
+        <h2>Mapa dos Comércios Locais</h2>
+        <p class="muted-info">Consulte os endereços reais dos comércios cadastrados no bairro.</p>
       </div>
       <div class="interactive-map-area" id="map-interactive-view">
-        <!-- Renderizado dinamicamente com pontos e detalhes de cada comércio -->
+        <!-- Injetado dinamicamente com pontos e endereços reais -->
       </div>
     </div>
   </dialog>
 
   <!-- SISTEMA DE FEEDBACK VISUAL (TOAST / AVISOS) -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 </body>
 </html>
