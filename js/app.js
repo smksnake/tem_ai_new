@@ -208,11 +208,11 @@
     {
       id: "usr-renato",
       type: "merchant",
-      name: "Renato Silva",
-      storeName: "Banca do Renato",
-      storeId: "banca-renato",
+      name: "Renato Bueno",
+      storeName: "Banca Bueno",
+      storeId: "banca-bueno",
       email: "banca@exemplo.com",
-      phone: "(11) 98765-4321"
+      phone: "(11) 98256-5530"
     }
   ];
 
@@ -253,6 +253,20 @@
     return Number(value || 0).toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL"
+    });
+  }
+
+  function formatDateBR(date) {
+  return date.toLocaleDateString("pt-BR");
+  }  
+
+  function formatDateTimeBR(date) {
+  return date.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
     });
   }
 
@@ -1908,9 +1922,12 @@
 
         selectedProductForReserve.stock -= qty;
 
-        // Gera código de voucher amigável como no esboço: #4587
+        // Gera código de voucher: #4587
         const voucherCode = `#${Math.floor(1000 + Math.random() * 9000)}`;
-        const deadline = "Sábado, 12/04";
+        const pickupDate = new Date();
+        pickupDate.setDate(pickupDate.getDate() + 3);
+
+        const deadline = `Retirar até: ${formatDateBR(pickupDate)}`;;
         const totalPrice = qty * selectedProductForReserve.price;
 
         const newReservation = {
@@ -1927,7 +1944,7 @@
           totalPrice,
           status: "Pendente",
           deadline,
-          createdAt: "Hoje"
+          createdAt: formatDateTimeBR(new Date())
         };
 
         reservations.unshift(newReservation);
