@@ -1927,7 +1927,7 @@
         const pickupDate = new Date();
         pickupDate.setDate(pickupDate.getDate() + 3);
 
-        const deadline = `Retirar até: ${formatDateBR(pickupDate)}`;;
+        const deadline = formatDateBR(pickupDate);
         const totalPrice = qty * selectedProductForReserve.price;
 
         const newReservation = {
