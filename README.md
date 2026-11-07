@@ -1,45 +1,101 @@
-# Tem aí? Tem Aqui! — O que você procura, pode estar pertinho de você!
+# 🏪 Tem Aí? Tem Aqui! — Plataforma Web de Consulta e Reserva Local
 
-Plataforma digital para consulta de disponibilidade e reserva de produtos em pequenos comércios locais, conectando consumidores e pequenos lojistas da comunidade.
-
----
-
-## 🚀 Principais Funcionalidades
-
-### 1. Visão do Cliente
-* **Busca Inteligente com Autocomplete:** Encontre produtos, lojas ou categorias em tempo real.
-* **Categorias em Destaque:** Acesso rápido a *Lançamentos (★)*, *Livros e revistas (📖)*, *Figurinhas (⚽)*, *Games e colecionáveis (🎮)*, *Papelaria (✏️)*, *Presentes (🎁)* e *E muito mais!*.
-* **Status em Tempo Real:** Sinalizador visual instantâneo (*"✓ Disponível"* ou *"Esgotado"*).
-* **Mapa de Comércios do Bairro:** Mini-mapa lateral e mapa completo ampliado com endereços reais e distâncias calculadas.
-* **Reserva com Voucher:**
-  * **Exclusiva para clientes logados:** Proteção contra reservas anônimas.
-  * Seleção de quantidade com cálculo do valor estimado total.
-  * Geração imediata do código de retirada em destaque (ex.: **`#4587`**).
-  * Canal direto via **WhatsApp** com o lojista com mensagem pré-configurada.
-* **Minhas Reservas:** Acompanhamento de vouchers com separação entre abas *Ativas* e *Histórico*, com cancelamento estornando o estoque.
-
-### 2. Modo Comerciante (Acesso Restrito)
-* **Visível apenas para comerciantes logados:** Acesso seguro com e-mail e senha.
-* **Painel da Loja com 3 Grandes Botões de Ação:**
-  1. ➕ **Cadastrar produto ou disponibilidade:** Cadastro rápido com título, categoria, estoque inicial e **upload de imagem do produto**.
-  2. 📦 **Meus produtos e reservas:** Controle ágil de estoque com botões `+` e `−` em um toque.
-  3. 📊 **Ver estatísticas (vendas e acessos):** Produtos mais procurados e volume de reservas atendidas.
-* **Cadastro de Novos Comércios:** Inclusão de Nome do Comércio, Categoria, WhatsApp e **Endereço Real Completo**, com georreferenciamento no mapa.
-* **Edição de Dados:** Possibilidade de atualizar nome, categoria, telefone e endereço real a qualquer momento.
-* **Gestão de Reservas no Balcão:** Vouchers dos clientes organizados em abas (*Todas*, *A retirar*, *Retiradas*) com confirmação de entrega em um clique.
-
-### 3. Modos de Visualização
-* **Modo Celular:** Simulação visual idêntica à tela de um smartphone com layout mobile completo.
-* **Modo Computador:** Visualização expandida em desktop com navegação lateral e widgets de mapa e reservas.
+> **Projeto Integrador II — Engenharia da Computação**  
+> **Universidade Virtual do Estado de São Paulo (UNIVESP)**  
+> **Polo:** CEU Heliópolis | **Ano:** 2026  
 
 ---
 
-## 🛠️ Como Executar
+## 📌 Sobre o Projeto
 
-O projeto foi construído em **HTML5, CSS3 e JavaScript puro**, persistindo os dados no `localStorage` do navegador sem a necessidade de instalar dependências ou rodar servidores:
+O **"Tem Aí? Tem Aqui!"** é uma plataforma web responsiva desenvolvida como solução tecnológica para promover a **inclusão digital de pequenos comerciantes tradicionais** e otimizar a experiência de compra em comércios de bairro.
 
-1. Abra a pasta `tem_ai_tem_aqui`.
-2. Dê um duplo clique no arquivo **`index.html`** no seu navegador favorito (Google Chrome, Microsoft Edge, Firefox, Safari).
-3. Para testar:
-   * **Como Cliente:** Clique em *"Entrar"* e use o botão *"Entrar como Cliente Demonstração"*, ou crie uma conta nova.
-   * **Como Comerciante:** Clique em *"Sou Comerciante"* e use o botão *"Entrar como Banca do Renato"*, ou cadastre uma nova loja com seu endereço real.
+O projeto toma como estudo de caso real a **Banca Bueno** (propriedade do **Sr. Renato Bueno**), um comércio tradicional com 40 anos de atuação na comunidade de **Heliópolis (São Paulo - SP)**.
+
+### ❓ O Problema
+Muitos pequenos comerciantes experientes possuem baixa fluência digital, operando via controle 100% manual. Em períodos de pico de demanda por produtos específicos (como álbuns de figurinhas, jornais ou lançamentos), clientes frequentemente realizam deslocamentos desnecessários até o estabelecimento sem saber se o produto está disponível. Sistemas comerciais de Ponto de Venda (PDV) tradicionais costumam ser complexos, intimidadores e caros para essa realidade.
+
+### 💡 A Solução
+Uma aplicação web leve, inclusiva e minimalista baseada em duas visões unificadas:
+1. **Visão do Consumidor:** Permite consultar a disponibilidade em tempo real, verificar a distância do comércio, realizar reservas com geração de voucher (`#4587`) e abrir canal direto de comunicação via WhatsApp.
+2. **Visão do Comerciante (Lojista):** Interface focada em acessibilidade e IHC (Interação Humano-Computador), com botões grandes, contraste adaptado e controle de estoque simplificado via seletores `+` e `−`, reduzindo o tempo de atualização para poucos segundos.
+
+---
+
+## 🚀 Demonstração Online
+
+🔗 **Acesse o sistema no ar (GitHub Pages):** [https://seu-usuario.github.io/tem-ai-tem-aqui/](https://seu-usuario.github.io/tem-ai-tem-aqui/)  
+*(Substitua `seu-usuario` pelo seu nome de usuário no GitHub)*
+
+---
+
+## ✨ Principais Funcionalidades
+
+### 📱 Visão do Cliente
+- 🔍 **Busca e Categorias:** Filtros rápidos (*Figurinhas, Livros e Revistas, Papelaria, Games*) e busca em tempo real com autocomplete.
+- 📍 **Localização e Mapa:** Mini-mapa interativo com referência a endereços reais dos comércios de Heliópolis.
+- 🎟️ **Reserva Garantida:** Proteção com login de cliente, seleção de quantidade e geração imediata de voucher para retirada presencial no balcão.
+- 💬 **Integração WhatsApp:** Link direto configurado com o número real do comércio e mensagem pré-formatada.
+
+### ⚙️ Modo Comerciante (Painel de Gestão)
+- ➕ **Cadastro Ágil de Produtos:** Upload de fotos com compressão automática em Canvas para economizar armazenamento local.
+- 📦 **Ajuste Rápido de Estoque:** Botões diretos `+` e `−` para alteração de saldo sem necessidade de digitar números.
+- 📋 **Gestão de Vouchers:** Abas organizadas (*Todas*, *A retirar*, *Retiradas*) com confirmação de entrega em um toque.
+- ✏️ **Edição do Estabelecimento:** Manutenção de nome, categoria, telefone e endereço real referenciado no mapa.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+O projeto foi construído inteiramente com tecnologias web nativas (**Vanilla JS**), priorizando performance, portabilidade e facilidade de execução em qualquer navegador sem necessidade de instalação de dependências ou servidores backend:
+
+- **HTML5:** Estruturação semântica e acessível (Diretrizes W3C/WCAG).
+- **CSS3:** Design System responsivo baseado em CSS Variables, Flexbox, CSS Grid e simulação de modos Desktop/Mobile.
+- **JavaScript (ES6+):** Lógica de estado global, manipuladores de eventos e persistência local.
+- **HTML5 Canvas API:** Otimização e compressão automática de imagens Base64 no upload.
+- **Web Storage API (`localStorage`):** Persistência completa de dados (usuários, lojas, produtos e reservas).
+
+---
+
+## 📁 Como Executar o Projeto Localmente
+
+1. Clone este repositório ou faça o download dos arquivos:
+   ```bash
+   git clone [https://github.com/seu-usuario/tem-ai-tem-aqui.git](https://github.com/seu-usuario/tem-ai-tem-aqui.git)
+
+
+2.Abra a pasta do projeto.
+
+3. Dê um duplo clique no arquivo index.html para abrir diretamente no seu navegador de preferência (Chrome, Edge, Firefox, Safari).
+
+**🧪 Dados para Testes Rápidos**
+Como Cliente: Clique em "Entrar" ➔ "Entrar como Cliente Demonstração".
+
+Como Comerciante: Clique em "Sou Comerciante" ➔ "Entrar como Banca do Renato".
+
+**👨‍🎓 Equipe e Autoria**
+Universidade Virtual do Estado de São Paulo (UNIVESP)
+
+Curso: Engenharia da Computação
+
+Tutor / Orientador: Yeison David Correa Cuellar
+
+Integrantes do Grupo:
+ANTONELLO, Eraldo de Souza (Aluno Responsável)
+
+BATINGA, Rafael de Melo
+
+FEITOSA, Nayron Kelson Leite
+
+GONCALVES, Elisabeth dos Santos
+
+LIMA, Emerson da Silva
+
+NOGUEIRA, Ellen
+
+PEREIRA, Pedro Henrique da Silva
+
+SOUSA, Emerson Aparecido de
+
+**📄 Licença e Agradecimentos
+Trabalho desenvolvido estritamente para fins acadêmicos na disciplina de Projeto Integrador II. Agradecimento especial ao Sr. Renato Bueno e à comunidade de Heliópolis pela cooperação, entrevistas e acolhimento durante a fase de levantamento de requisitos. **
