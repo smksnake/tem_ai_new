@@ -257,16 +257,16 @@
   }
 
   function formatDateBR(date) {
-  return date.toLocaleDateString("pt-BR");
-  }  
+    return date.toLocaleDateString("pt-BR");
+  }
 
   function formatDateTimeBR(date) {
-  return date.toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
+    return date.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     });
   }
 
@@ -826,7 +826,7 @@
 
     title.textContent = product.name;
     subtitle.textContent = `Estabelecimento: ${product.store} (${product.distance})`;
-    
+
     // Pré-preenche dados do cliente logado
     custName.value = currentUser ? currentUser.name : "";
     custPhone.value = currentUser ? currentUser.phone : "";
@@ -851,60 +851,78 @@
   // --------------------------------------------------------------------------
   // 4. TELA DO CLIENTE: MINHAS RESERVAS (ESBOÇO CELULAR TELA 4)
   // --------------------------------------------------------------------------
+
   function renderClientReservations() {
     if (!currentUser || currentUser.type !== "customer") {
       mainContent.innerHTML = `
-        <section class="content-section text-center" style="padding:50px 20px;">
-          <p style="font-size:3rem; margin-bottom:12px;">🔒</p>
-          <h2>Área de Reservas do Cliente</h2>
-          <p class="muted-info">Faça login com sua conta de cliente para visualizar seus vouchers de retirada.</p>
-          <button class="btn-primary" id="btn-login-to-see-res">Entrar como Cliente</button>
-        </section>
-      `;
+      <section class="content-section text-center" style="padding:50px 20px;">
+        <p style="font-size:3rem; margin-bottom:12px;">🔒</p>
+        <h2>Área de Reservas do Cliente</h2>
+        <p class="muted-info">Faça login com sua conta de cliente para visualizar seus vouchers de retirada.</p>
+        <button class="btn-primary" id="btn-login-to-see-res">Entrar como Cliente</button>
+      </section>
+    `;
       mainContent.querySelector("#btn-login-to-see-res").addEventListener("click", () => openAuthModal("customer"));
       return;
     }
 
-    const pending = reservations.filter(r => r.status === "Pendente" || r.status === "Aguardando Retirada");
-    const history = reservations.filter(r => r.status !== "Pendente" && r.status !== "Aguardando Retirada");
+    // Filtra somente as reservas do cliente conectado
+    const myReservations = reservations.filter(
+      r => r.customerId === currentUser.id
+    );
+
+    // Separa as reservas ativas
+    const pending = myReservations.filter(
+      r => r.status === "Pendente" || r.status === "Aguardando Retirada"
+    );
+
+    // Separa o histórico
+    const history = myReservations.filter(
+      r => r.status !== "Pendente" && r.status !== "Aguardando Retirada"
+    );
 
     mainContent.innerHTML = `
-      <section class="content-section">
-        <div class="section-header">
-          <div>
-            <h2>Minhas Reservas</h2>
-            <p class="muted-info" style="margin-bottom:0;">Apresente o código de reserva na loja para retirar seu produto.</p>
-          </div>
-          <button class="btn-secondary" id="btn-back-home-res">Voltar ao Início</button>
+    <section class="content-section">
+      <div class="section-header">
+        <div>
+          <h2>Minhas Reservas</h2>
+          <p class="muted-info" style="margin-bottom:0;">Apresente o código de reserva na loja para retirar seu produto.</p>
         </div>
+        <button class="btn-secondary" id="btn-back-home-res">Voltar ao Início</button>
+      </div>
 
-        <div class="segmented-tabs" id="reservations-client-tabs">
-          <button class="segmented-tab active" data-tab="active">Ativas (${pending.length})</button>
-          <button class="segmented-tab" data-tab="history">Histórico (${history.length})</button>
-        </div>
+      <div class="segmented-tabs" id="reservations-client-tabs">
+        <button class="segmented-tab active" data-tab="active">Ativas (${pending.length})</button>
+        <button class="segmented-tab" data-tab="history">Histórico (${history.length})</button>
+      </div>
 
-        <div id="client-res-content">
-          ${renderClientResCards(pending, true)}
-        </div>
-      </section>
-    `;
+      <div id="client-res-content">
+        ${renderClientResCards(pending, true)}
+      </div>
+    </section>
+  `;
 
     mainContent.querySelector("#btn-back-home-res").addEventListener("click", () => navigateTo("client-home"));
 
     const tabBtns = mainContent.querySelectorAll("#reservations-client-tabs .segmented-tab");
+
     tabBtns.forEach(btn => {
       btn.addEventListener("click", () => {
         tabBtns.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
+
         const isAct = btn.dataset.tab === "active";
         const container = mainContent.querySelector("#client-res-content");
+
         container.innerHTML = renderClientResCards(isAct ? pending : history, isAct);
+
         attachClientResEvents();
       });
     });
 
     attachClientResEvents();
   }
+
 
   function renderClientResCards(list, isActive) {
     if (!list.length) {
@@ -1552,8 +1570,8 @@
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
           ${stores.map(s => {
-            const count = products.filter(p => p.storeId === s.id).length;
-            return `
+      const count = products.filter(p => p.storeId === s.id).length;
+      return `
               <div class="content-section" style="border: 2px solid var(--border-light); box-shadow:none;">
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
                   <span style="font-size:2.4rem;">${s.icon}</span>
@@ -1574,7 +1592,7 @@
                 </div>
               </div>
             `;
-          }).join("")}
+    }).join("")}
         </div>
       </section>
     `;
@@ -1763,7 +1781,7 @@
         isMobileMode = !isMobileMode;
         deviceWrapper.classList.toggle("device-mobile", isMobileMode);
         deviceWrapper.classList.toggle("device-standard", !isMobileMode);
-        
+
         // Nomes exatos solicitados pelo usuário
         deviceModeLabel.textContent = isMobileMode ? "Modo Computador" : "Modo Celular";
         showToast(isMobileMode ? "Visualização no Modo Celular ativada." : "Visualização no Modo Computador ativada.");
@@ -1932,6 +1950,7 @@
 
         const newReservation = {
           code: voucherCode,
+          custumerId: currentUser.id,
           product: selectedProductForReserve.name,
           productId: selectedProductForReserve.id,
           productImage: selectedProductForReserve.image,
