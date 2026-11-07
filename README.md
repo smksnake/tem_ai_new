@@ -71,7 +71,7 @@ O projeto foi construído inteiramente com tecnologias web nativas (**Vanilla JS
 **🧪 Dados para Testes Rápidos**
 Como Cliente: Clique em "Entrar" ➔ "Entrar como Cliente Demonstração".
 
-Como Comerciante: Clique em "Sou Comerciante" ➔ "Entrar como Banca do Renato".
+Como Comerciante: Clique em "Sou Comerciante" ➔ "Entrar como Banca Bueno".
 
 **👨‍🎓 Equipe e Autoria**
 Universidade Virtual do Estado de São Paulo (UNIVESP)

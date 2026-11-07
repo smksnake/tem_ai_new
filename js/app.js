@@ -20,12 +20,12 @@
   // BANCO DE DADOS INICIAL DE LOJAS COM ENDEREÇO REAL PARA REFERÊNCIA NO MAPA
   const INITIAL_STORES = [
     {
-      id: "banca-renato",
-      name: "Banca do Renato",
+      id: "banca-bueno",
+      name: "Banca Bueno",
       category: "Banca de Jornal & Revistas",
       distance: "500 m",
       address: "Av. Heliópolis, 120 — Heliópolis, São Paulo - SP",
-      phone: "(11) 98765-4321",
+      phone: "(11) 98256-5530",
       icon: "🏪",
       thumb: PRODUCT_PRESETS.album,
       status: "Aberta",
@@ -79,8 +79,8 @@
       id: 1,
       name: "Álbum de Figurinhas Copa 2026",
       category: "Figurinhas",
-      storeId: "banca-renato",
-      store: "Banca do Renato",
+      storeId: "banca-bueno",
+      store: "Banca Bueno",
       distance: "500 m",
       stock: 50,
       price: 12.00,
@@ -93,8 +93,8 @@
       id: 2,
       name: "Jornal do Dia",
       category: "Livros e revistas",
-      storeId: "banca-renato",
-      store: "Banca do Renato",
+      storeId: "banca-bueno",
+      store: "Banca Bueno",
       distance: "500 m",
       stock: 30,
       price: 2.50,
@@ -135,8 +135,8 @@
       id: 5,
       name: "Revistas em Geral",
       category: "Livros e revistas",
-      storeId: "banca-renato",
-      store: "Banca do Renato",
+      storeId: "banca-bueno",
+      store: "Banca Bueno",
       distance: "500 m",
       stock: 20,
       price: 15.00,
@@ -153,8 +153,8 @@
       code: "#4587",
       product: "Álbum de Figurinhas Copa 2026",
       productId: 1,
-      storeId: "banca-renato",
-      store: "Banca do Renato",
+      storeId: "banca-bueno",
+      store: "Banca Bueno",
       customerName: "Cliente #4587",
       customerPhone: "(11) 98765-1122",
       quantity: 1,
@@ -168,8 +168,8 @@
       code: "#3271",
       product: "Jornal do Dia",
       productId: 2,
-      storeId: "banca-renato",
-      store: "Banca do Renato",
+      storeId: "banca-bueno",
+      store: "Banca Bueno",
       customerName: "Cliente #3271",
       customerPhone: "(11) 97766-5544",
       quantity: 1,
@@ -183,8 +183,8 @@
       code: "#2840",
       product: "Revista Veja",
       productId: 5,
-      storeId: "banca-renato",
-      store: "Banca do Renato",
+      storeId: "banca-bueno",
+      store: "Banca Bueno",
       customerName: "Cliente #2840",
       customerPhone: "(11) 96655-4433",
       quantity: 1,
@@ -270,6 +270,65 @@
     });
   }
 
+  /**
+   * Compacta e redimensiona imagens usando a HTML5 Canvas API
+   * Evita estourar a cota de armazenamento do localStorage (~5 MB)
+   * Reduz fotos pesadas de celulares (3 MB - 10 MB) para JPEG leve (< 100 KB) com excelente qualidade visual
+   */
+  function compressImageWithCanvas(file, maxWidth = 640, quality = 0.82) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith("image/")) {
+        reject(new Error("O arquivo selecionado não é uma imagem válida."));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error("Erro ao ler o arquivo de imagem."));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error("Erro ao decodificar a imagem."));
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          // Redimensiona proporcionalmente mantendo o aspect ratio
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext("2d");
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Gera Data URL compactado em JPEG
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+          const compressedBytes = Math.round((compressedDataUrl.length * 3) / 4);
+
+          resolve({
+            dataUrl: compressedDataUrl,
+            originalSize: file.size,
+            compressedSize: compressedBytes
+          });
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function formatBytes(bytes) {
+    if (!bytes || bytes <= 0) return "0 B";
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / 1048576).toFixed(1) + " MB";
+  }
+
   function escapeHTML(str) {
     return String(str || "").replace(/[&<>"']/g, c => ({
       "&": "&amp;",
@@ -317,11 +376,47 @@
   // INICIALIZAÇÃO
   // ==========================================================================
   function init() {
+    migrateStorage();
     setupAuthListeners();
     setupGlobalListeners();
     updateUserSessionUI();
     renderSideReservationsWidget();
     renderCurrentView();
+  }
+
+  // Migração/Sincronização de dados persistidos no localStorage
+  function migrateStorage() {
+    let updated = false;
+    stores.forEach(s => {
+      if (s.id === "banca-renato") {
+        s.id = "banca-bueno";
+        s.name = "Banca Bueno";
+        s.phone = "(11) 98256-5530";
+        updated = true;
+      }
+    });
+    products.forEach(p => {
+      if (p.storeId === "banca-renato") {
+        p.storeId = "banca-bueno";
+        p.store = "Banca Bueno";
+        updated = true;
+      }
+    });
+    reservations.forEach(r => {
+      if (r.storeId === "banca-renato") {
+        r.storeId = "banca-bueno";
+        r.store = "Banca Bueno";
+        updated = true;
+      }
+    });
+    if (currentUser && currentUser.storeId === "banca-renato") {
+      currentUser.storeId = "banca-bueno";
+      currentUser.storeName = "Banca Bueno";
+      updated = true;
+    }
+    if (updated) {
+      saveStorage();
+    }
   }
 
   // ==========================================================================
@@ -987,7 +1082,7 @@
   // 5. TELA DO COMERCIANTE: PAINEL PRINCIPAL (ESBOÇO CELULAR TELA 1)
   // --------------------------------------------------------------------------
   function renderMerchantDashboard() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-renato")) || stores[0];
+    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
     const myProducts = products.filter(p => p.storeId === store.id);
     const myReservations = reservations.filter(r => r.storeId === store.id && r.status === "Pendente");
 
@@ -1100,7 +1195,7 @@
   // 6. TELA DO COMERCIANTE: MEUS PRODUTOS (ESBOÇO CELULAR TELA 3)
   // --------------------------------------------------------------------------
   function renderMerchantProductsList() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-renato")) || stores[0];
+    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
     const myProducts = products.filter(p => p.storeId === store.id);
 
     mainContent.innerHTML = `
@@ -1272,17 +1367,27 @@
 
     dropzone.addEventListener("click", () => fileInput.click());
 
-    fileInput.addEventListener("change", (e) => {
+    fileInput.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-          currentProductImageBase64 = evt.target.result;
+        try {
+          showToast("Otimizando imagem com Canvas API...");
+          const result = await compressImageWithCanvas(file, 640, 0.82);
+          currentProductImageBase64 = result.dataUrl;
           previewThumb.src = currentProductImageBase64;
-          previewName.textContent = file.name;
-          showToast(`Imagem "${file.name}" carregada com sucesso.`);
-        };
-        reader.readAsDataURL(file);
+          previewName.textContent = `${file.name} (${formatBytes(result.compressedSize)})`;
+          showToast(`Imagem otimizada com sucesso (${formatBytes(result.originalSize)} ➔ ${formatBytes(result.compressedSize)})!`);
+        } catch (err) {
+          console.warn("Compressão via Canvas falhou, usando fallback direto:", err);
+          const reader = new FileReader();
+          reader.onload = function (evt) {
+            currentProductImageBase64 = evt.target.result;
+            previewThumb.src = currentProductImageBase64;
+            previewName.textContent = file.name;
+            showToast(`Imagem "${file.name}" carregada.`);
+          };
+          reader.readAsDataURL(file);
+        }
       }
     });
 
@@ -1316,7 +1421,7 @@
     // Envio do Formulário
     mainContent.querySelector("#form-add-product").addEventListener("submit", (e) => {
       e.preventDefault();
-      const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-renato")) || stores[0];
+      const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
       const name = mainContent.querySelector("#prod-name-input").value.trim();
       const category = mainContent.querySelector("#prod-cat-input").value;
       const price = parseFloat(mainContent.querySelector("#prod-price-input").value) || 0;
@@ -1349,7 +1454,7 @@
   // 8. TELA DO COMERCIANTE: RESERVAS RECEBIDAS (ESBOÇO CELULAR TELA 4)
   // --------------------------------------------------------------------------
   function renderMerchantReservationsList() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-renato")) || stores[0];
+    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
     const myRes = reservations.filter(r => r.storeId === store.id);
     const toPickup = myRes.filter(r => r.status === "Pendente");
     const finished = myRes.filter(r => r.status === "Concluída" || r.status === "Confirmada");
@@ -1444,7 +1549,7 @@
   // 9. TELA DO COMERCIANTE: ESTATÍSTICAS
   // --------------------------------------------------------------------------
   function renderMerchantStats() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-renato")) || stores[0];
+    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
     const myProds = products.filter(p => p.storeId === store.id);
     const myRes = reservations.filter(r => r.storeId === store.id);
     const finishedCount = myRes.filter(r => r.status === "Concluída").length;
@@ -1950,7 +2055,7 @@
 
         const newReservation = {
           code: voucherCode,
-          custumerId: currentUser.id,
+          customerId: currentUser.id,
           product: selectedProductForReserve.name,
           productId: selectedProductForReserve.id,
           productImage: selectedProductForReserve.image,
@@ -2068,23 +2173,23 @@
       });
     }
 
-    // Botão de Login Rápido (Banca do Renato)
+    // Botão de Login Rápido (Banca Bueno)
     const btnQuickMerch = document.getElementById("btn-quick-merchant");
     if (btnQuickMerch) {
       btnQuickMerch.addEventListener("click", () => {
         currentUser = {
           id: "usr-renato",
           type: "merchant",
-          name: "Renato Silva",
-          storeName: "Banca do Renato",
-          storeId: "banca-renato",
+          name: "Renato Bueno",
+          storeName: "Banca Bueno",
+          storeId: "banca-bueno",
           email: "banca@exemplo.com",
-          phone: "(11) 98765-4321"
+          phone: "(11) 98256-5530"
         };
         saveStorage();
         merchantAuthModal.close();
         updateUserSessionUI();
-        showToast("Modo Comerciante ativado: Banca do Renato.");
+        showToast("Modo Comerciante ativado: Banca Bueno.");
         navigateTo("merchant-dashboard");
       });
     }
