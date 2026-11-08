@@ -147,6 +147,7 @@ img {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: auto;
 }
 
 .utility-btn {
@@ -182,6 +183,9 @@ img {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.utility-auth-group:empty {
+  display: none;
 }
 
 /* ==========================================================================

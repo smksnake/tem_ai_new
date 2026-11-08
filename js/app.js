@@ -546,21 +546,15 @@
   }
 
   function attachAuthButtonEvents() {
-    const logoutBtns = document.querySelectorAll(
-      "#quick-logout-btn, #header-logout-btn",
-    );
+    const logoutBtns = document.querySelectorAll("#header-logout-btn");
     logoutBtns.forEach((b) => b.addEventListener("click", handleLogout));
 
-    const custLoginBtns = document.querySelectorAll(
-      "#quick-login-cust-btn, #header-login-cust-btn",
-    );
+    const custLoginBtns = document.querySelectorAll("#header-login-cust-btn");
     custLoginBtns.forEach((b) =>
       b.addEventListener("click", () => openAuthModal("customer")),
     );
 
-    const merchLoginBtns = document.querySelectorAll(
-      "#quick-login-merch-btn, #header-login-merch-btn",
-    );
+    const merchLoginBtns = document.querySelectorAll("#header-login-merch-btn");
     merchLoginBtns.forEach((b) =>
       b.addEventListener("click", () => openAuthModal("merchant")),
     );
