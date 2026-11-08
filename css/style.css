@@ -2270,3 +2270,14 @@ img {
     justify-content: flex-start;
   }
 }
+/* Respeita a preferência do usuário por menos animação (acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
