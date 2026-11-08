@@ -27,7 +27,7 @@ Uma aplicação web leve, inclusiva e minimalista baseada em duas visões unific
 
 ## 🚀 Demonstração Online
 
-🔗 **Acesse o sistema no ar (GitHub Pages):** [https://github.com/smksnake/tem_ai_new](https://github.com/smksnake/tem_ai_new)
+🔗 **Acesse o sistema no ar (GitHub Pages):** [https://smksnake.github.io/tem_ai_new/](https://smksnake.github.io/tem_ai_new/)
 
 > **Nota:** Se o link acima não abrir, verifique se o GitHub Pages está ativado em **Settings ➔ Pages** no repositório.
 
