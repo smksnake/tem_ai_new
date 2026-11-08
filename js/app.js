@@ -8,6 +8,19 @@
 (function () {
   "use strict";
 
+  /**
+ * Categorias oficiais da plataforma.
+ * Fonte única da verdade: home, filtros, formulário de cadastro e edição usam esta lista.
+ */
+  const CATEGORIES = [
+    { name: "Figurinhas", icon: "⚽", colorClass: "icon-lightblue" },
+    { name: "Livros e revistas", icon: "📖", colorClass: "icon-blue" },
+    { name: "Papelaria", icon: "✏️", colorClass: "icon-blue" },
+    { name: "Games e colecionáveis", icon: "🎮", colorClass: "icon-blue" },
+    { name: "Lançamentos", icon: "★", colorClass: "icon-green" },
+    { name: "Presentes", icon: "🎁", colorClass: "icon-blue" }
+  ];
+
   // IMAGENS DE ALTA FIDELIDADE BASEADAS NOS ESBOÇOS (SVG / DATA URLs)
   const PRODUCT_PRESETS = {
     album: "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%231E3A8A'/%3E%3Crect x='40' y='20' width='220' height='160' rx='8' fill='%232563EB' stroke='%23FBBF24' stroke-width='4'/%3E%3Ctext x='150' y='65' fill='%23FFF' font-family='sans-serif' font-weight='900' font-size='22' text-anchor='middle'%3EÁLBUM DE%3C/text%3E%3Ctext x='150' y='95' fill='%23FEF08A' font-family='sans-serif' font-weight='900' font-size='22' text-anchor='middle'%3EFIGURINHAS%3C/text%3E%3Ctext x='150' y='125' fill='%2393C5FD' font-family='sans-serif' font-weight='700' font-size='14' text-anchor='middle'%3ECOPA 2026%3C/text%3E%3Ccircle cx='150' cy='155' r='16' fill='%23FFF' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M150 143L157 149L154 158L146 158L143 149Z' fill='%23000'/%3E%3C/svg%3E",
@@ -153,9 +166,10 @@
       code: "#4587",
       product: "Álbum de Figurinhas Copa 2026",
       productId: 1,
+      customerId: "usr-cliente",
       storeId: "banca-bueno",
       store: "Banca Bueno",
-      customerName: "Cliente #4587",
+      customerName: "Maria da Silva",
       customerPhone: "(11) 98765-1122",
       quantity: 1,
       unitPrice: 12.00,
@@ -168,10 +182,11 @@
       code: "#3271",
       product: "Jornal do Dia",
       productId: 2,
+      customerId: "usr-cliente",
       storeId: "banca-bueno",
       store: "Banca Bueno",
-      customerName: "Cliente #3271",
-      customerPhone: "(11) 97766-5544",
+      customerName: "Maria da Silva",
+      customerPhone: "(11) 98765-1122",
       quantity: 1,
       unitPrice: 2.50,
       totalPrice: 2.50,
@@ -183,10 +198,11 @@
       code: "#2840",
       product: "Revista Veja",
       productId: 5,
+      customerId: "usr-cliente",
       storeId: "banca-bueno",
       store: "Banca Bueno",
-      customerName: "Cliente #2840",
-      customerPhone: "(11) 96655-4433",
+      customerName: "Maria da Silva",
+      customerPhone: "(11) 98765-1122",
       quantity: 1,
       unitPrice: 15.00,
       totalPrice: 15.00,
@@ -231,22 +247,55 @@
   let selectedProductForReserve = null;
   let currentProductImageBase64 = null; // Para upload de imagem
 
-  // UTILITÁRIOS
-  function loadStorage(key, fallback) {
+  /**
+ * Clona um objeto de forma segura em qualquer navegador.
+ * structuredClone não existe em navegadores antigos; usamos JSON como fallback.
+ */
+  function safeClone(obj) {
     try {
-      const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : structuredClone(fallback);
+      return typeof structuredClone === "function"
+        ? structuredClone(obj)
+        : JSON.parse(JSON.stringify(obj));
     } catch {
-      return structuredClone(fallback);
+      return JSON.parse(JSON.stringify(obj));
     }
   }
 
+  function loadStorage(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw === null) return safeClone(fallback);
+      return JSON.parse(raw);
+    } catch (err) {
+      console.warn(`[loadStorage] Falha ao ler "${key}", usando fallback.`, err);
+      return safeClone(fallback);
+    }
+  }
+
+  /**
+   * Salva tudo com tratamento de cota.
+   * Retorna true se salvou; false se o storage estourou.
+   */
   function saveStorage() {
-    localStorage.setItem("temai_stores", JSON.stringify(stores));
-    localStorage.setItem("temai_products", JSON.stringify(products));
-    localStorage.setItem("temai_reservations", JSON.stringify(reservations));
-    localStorage.setItem("temai_users", JSON.stringify(users));
-    localStorage.setItem("temai_current_user", JSON.stringify(currentUser));
+    try {
+      localStorage.setItem("temai_stores", JSON.stringify(stores));
+      localStorage.setItem("temai_products", JSON.stringify(products));
+      localStorage.setItem("temai_reservations", JSON.stringify(reservations));
+      localStorage.setItem("temai_users", JSON.stringify(users));
+      localStorage.setItem("temai_current_user", JSON.stringify(currentUser));
+      return true;
+    } catch (err) {
+      if (err && (err.name === "QuotaExceededError" || err.code === 22)) {
+        showToast(
+          "⚠️ Armazenamento cheio! Remova fotos antigas de produtos ou limpe dados do navegador."
+        );
+        console.error("[saveStorage] QuotaExceededError:", err);
+      } else {
+        showToast("⚠️ Erro ao salvar dados. Verifique o console.");
+        console.error("[saveStorage]", err);
+      }
+      return false;
+    }
   }
 
   function formatMoney(value) {
@@ -659,8 +708,10 @@
 
     const term = activeSearchTerm.trim().toLowerCase();
     const filteredProducts = products.filter(p => {
+      // "E muito mais!" é atalho para "ver todas", não um filtro real
       const matchCat = !activeCategory || activeCategory === "E muito mais!" || p.category === activeCategory;
-      const matchSearch = !term || [p.name, p.store, p.category, p.description].some(v => (v || "").toLowerCase().includes(term));
+      const matchSearch = !term || [p.name, p.store, p.category, p.description].some(v => (v || "").toLowerCase().includes(term)
+      );
       return matchCat && matchSearch;
     });
 
@@ -776,6 +827,14 @@
     mainContent.querySelectorAll(".cat-circle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const cat = btn.dataset.cat;
+
+        // "E muito mais!" funciona como botão "Ver todas"
+        if (cat === "E muito mais!") {
+          activeCategory = "";
+          renderClientHome();
+          return;
+        }
+
         activeCategory = activeCategory === cat ? "" : cat;
         renderClientHome();
       });
@@ -1326,7 +1385,9 @@
                 <option value="Lançamentos">Lançamentos</option>
                 <option value="Games e colecionáveis">Games e colecionáveis</option>
                 <option value="Papelaria">Papelaria</option>
+                <option value="Presentes">Presentes</option>
                 <option value="Outros">Outros</option>
+                
               </select>
             </div>
             <div class="form-group flex-1">
@@ -1378,14 +1439,31 @@
           previewName.textContent = `${file.name} (${formatBytes(result.compressedSize)})`;
           showToast(`Imagem otimizada com sucesso (${formatBytes(result.originalSize)} ➔ ${formatBytes(result.compressedSize)})!`);
         } catch (err) {
-          console.warn("Compressão via Canvas falhou, usando fallback direto:", err);
+          console.warn("[upload] Compressão via Canvas falhou. Tentando reduzir qualidade...", err);
+
+          // Tentativa de recompressão mais agressiva
+          try {
+            const result = await compressImageWithCanvas(file, 480, 0.65);
+            currentProductImageBase64 = result.dataUrl;
+            previewThumb.src = currentProductImageBase64;
+            previewName.textContent = `${file.name} (${formatBytes(result.compressedSize)})`;
+            showToast(`Imagem otimizada em modo leve (${formatBytes(result.compressedSize)}).`);
+            return;
+          } catch (err2) {
+            console.error("[upload] Recompressão também falhou.", err2);
+          }
+
+          // Fallback: ler direto, mas avisar
           const reader = new FileReader();
           reader.onload = function (evt) {
             currentProductImageBase64 = evt.target.result;
             previewThumb.src = currentProductImageBase64;
             previewName.textContent = file.name;
-            showToast(`Imagem "${file.name}" carregada.`);
+            showToast(
+              `Imagem "${file.name}" carregada sem compressão. Isso pode encher o armazenamento.`
+            );
           };
+          reader.onerror = () => showToast("Não foi possível ler a imagem.");
           reader.readAsDataURL(file);
         }
       }
@@ -1581,20 +1659,24 @@
 
         <div class="content-section" style="border:1.5px solid var(--border-light);">
           <h3 style="font-size:1.15rem; margin-bottom:14px;">🏆 Produtos Mais Procurados pelos Clientes</h3>
+          ${(() => {
+        const ranked = myProds.map(p => ({ name: p.name, reservations: myRes.filter(r => r.productId === p.id).length })).sort((a, b) => b.reservations - a.reservations).slice(0, 3);
+
+        if (!ranked.length) {
+          return `<p class="muted-info" style="padding:16px;">Ainda não há produtos cadastrados para ranquear.</p>`;
+        }
+
+        return `
           <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
-            <li style="display:flex; justify-content:space-between; padding:12px; background:#f8fafc; border-radius:8px;">
-              <strong>1º Álbum de Figurinhas Copa 2026</strong>
-              <span class="pill-disponivel">42 visualizações essa semana</span>
-            </li>
-            <li style="display:flex; justify-content:space-between; padding:12px; background:#f8fafc; border-radius:8px;">
-              <strong>2º Jornal do Dia</strong>
-              <span class="pill-disponivel">31 visualizações essa semana</span>
-            </li>
-            <li style="display:flex; justify-content:space-between; padding:12px; background:#f8fafc; border-radius:8px;">
-              <strong>3º Revistas em Geral</strong>
-              <span class="pill-disponivel">19 visualizações essa semana</span>
-            </li>
+            ${ranked.map((item, i) => `
+              <li style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafc; border-radius:8px;">
+                <strong>${i + 1}º ${escapeHTML(item.name)}</strong>
+                <span class="pill-disponivel">${item.reservations} reserva(s)</span>
+              </li>
+            `).join("")}
           </ul>
+        `;
+      })()}
         </div>
       </section>
     `;
@@ -1857,7 +1939,7 @@
 
     sideReservationsList.innerHTML = recents.map(r => `
       <div class="side-res-card-item">
-        <img src="${r.productImage || PRODUCT_PRESETS.album}" alt="${escapeHTML(r.product)}" class="side-res-thumb">
+        <img src="${r.productImage || (products.find(p => p.id === r.productId)?.image) || PRODUCT_PRESETS.album}" alt="${escapeHTML(r.product)}" class="side-res-thumb">
         <div class="side-res-info">
           <div class="side-res-title">${escapeHTML(r.product)}</div>
           <div class="side-res-store">🏪 ${escapeHTML(r.store)}</div>
