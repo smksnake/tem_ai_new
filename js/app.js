@@ -2865,12 +2865,16 @@
 
         if (!store) {
           showToast("Usuário não Encontrado");
+          return;
         }
 
+        // Procura o usuário dono dessa loja no array de usuários
+        const owner = users.find((u) => u.email === email);
+
         currentUser = {
-          id: "usr-" + Date.now(),
+          id: owner ? owner.id : "usr-" + Date.now(),
           type: "merchant",
-          name: "Lojista",
+          name: owner ? owner.name : "Lojista", // 👈 Recupera o nome real
           email: email,
           ...{ storeName: store.name, storeId: store.id, ...store },
         };
@@ -2883,7 +2887,7 @@
       });
     }
 
-    // Envio Cadastro Novo Comércio (com Endereço Real para Referência no Mapa)
+    // Envio Cadastro Novo Comércio
     if (formMerchReg) {
       formMerchReg.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -2892,13 +2896,21 @@
           .value.trim();
         const category = document.getElementById("merch-reg-category").value;
         const phone = document.getElementById("merch-reg-phone").value.trim();
-        const address = document
+        const baseAddress = document
           .getElementById("merch-reg-address")
           .value.trim();
         const cep = document.getElementById("merch-reg-cep").value.trim();
         const number = document.getElementById("merch-reg-number").value.trim();
         const complement = document
           .getElementById("merch-reg-complement")
+          .value.trim();
+
+        // Junta tudo num endereço completo e bonito
+        let address = baseAddress;
+        if (number) address += `, ${number}`;
+        if (complement) address += ` - ${complement}`;
+        const ownerName = document
+          .getElementById("merch-reg-owner")
           .value.trim();
         const email = document.getElementById("merch-reg-email").value.trim();
 
@@ -2929,7 +2941,7 @@
         currentUser = {
           id: "usr-" + Date.now(),
           type: "merchant",
-          name: "Responsável",
+          name: ownerName,
           storeName: storeName,
           storeId: newStoreId,
           email,
@@ -3000,12 +3012,31 @@
 })();
 
 async function consultaCep(value) {
-  const numbers = value.replace("-", "");
-  if (numbers.length != 8) return;
-  const url = new URL(`https://viacep.com.br/ws/${numbers}/json/`);
-  const request = await fetch(url);
-  const response = await request.json();
-  const addrImput = document.getElementById("merch-reg-address");
-  const { logradouro, bairro, localidade, uf } = response;
-  addrImput.value = `${logradouro} - ${bairro} - ${localidade}/${uf}`;
+  const numbers = value.replace(/\D/g, ""); // Remove tudo que não é número
+  if (numbers.length !== 8) return;
+
+  const addrInput = document.getElementById("merch-reg-address");
+  addrInput.value = "Buscando endereço...";
+
+  try {
+    const url = `https://viacep.com.br/ws/${numbers}/json/`;
+    const request = await fetch(url);
+    const response = await request.json();
+
+    if (response.erro) {
+      alert("CEP não encontrado. Por favor, preencha o endereço manualmente.");
+      addrInput.value = "";
+      addrInput.readOnly = false; // Libera para digitar
+      return;
+    }
+
+    const { logradouro, bairro, localidade, uf } = response;
+    addrInput.value = `${logradouro || ""} - ${bairro || ""} - ${localidade}/${uf}`;
+    addrInput.readOnly = true;
+  } catch (error) {
+    console.error("Erro ao buscar CEP:", error);
+    alert("Erro ao buscar o CEP. Verifique sua conexão.");
+    addrInput.value = "";
+    addrInput.readOnly = false;
+  }
 }
