@@ -9,25 +9,30 @@
   "use strict";
 
   /**
- * Categorias oficiais da plataforma.
- * Fonte única da verdade: home, filtros, formulário de cadastro e edição usam esta lista.
- */
+   * Categorias oficiais da plataforma.
+   * Fonte única da verdade: home, filtros, formulário de cadastro e edição usam esta lista.
+   */
   const CATEGORIES = [
     { name: "Figurinhas", icon: "⚽", colorClass: "icon-lightblue" },
     { name: "Livros e revistas", icon: "📖", colorClass: "icon-blue" },
     { name: "Papelaria", icon: "✏️", colorClass: "icon-blue" },
     { name: "Games e colecionáveis", icon: "🎮", colorClass: "icon-blue" },
     { name: "Lançamentos", icon: "★", colorClass: "icon-green" },
-    { name: "Presentes", icon: "🎁", colorClass: "icon-blue" }
+    { name: "Presentes", icon: "🎁", colorClass: "icon-blue" },
   ];
 
   // IMAGENS DE ALTA FIDELIDADE BASEADAS NOS ESBOÇOS (SVG / DATA URLs)
   const PRODUCT_PRESETS = {
-    album: "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%231E3A8A'/%3E%3Crect x='40' y='20' width='220' height='160' rx='8' fill='%232563EB' stroke='%23FBBF24' stroke-width='4'/%3E%3Ctext x='150' y='65' fill='%23FFF' font-family='sans-serif' font-weight='900' font-size='22' text-anchor='middle'%3EÁLBUM DE%3C/text%3E%3Ctext x='150' y='95' fill='%23FEF08A' font-family='sans-serif' font-weight='900' font-size='22' text-anchor='middle'%3EFIGURINHAS%3C/text%3E%3Ctext x='150' y='125' fill='%2393C5FD' font-family='sans-serif' font-weight='700' font-size='14' text-anchor='middle'%3ECOPA 2026%3C/text%3E%3Ccircle cx='150' cy='155' r='16' fill='%23FFF' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M150 143L157 149L154 158L146 158L143 149Z' fill='%23000'/%3E%3C/svg%3E",
-    jornal: "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%23E2E8F0'/%3E%3Crect x='30' y='25' width='240' height='150' rx='4' fill='%23F8FAFC' stroke='%2394A3B8' stroke-width='2'/%3E%3Crect x='45' y='40' width='210' height='26' fill='%230F172A'/%3E%3Ctext x='150' y='58' fill='%23FFF' font-family='serif' font-weight='900' font-size='16' text-anchor='middle'%3EJORNAL DO DIA%3C/text%3E%3Crect x='45' y='75' width='100' height='60' fill='%23CBD5E1'/%3E%3Cline x1='155' y1='80' x2='255' y2='80' stroke='%23334155' stroke-width='4'/%3E%3Cline x1='155' y1='92' x2='255' y2='92' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='155' y1='104' x2='255' y2='104' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='155' y1='116' x2='240' y2='116' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='45' y1='145' x2='255' y2='145' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='45' y1='155' x2='200' y2='155' stroke='%2364748B' stroke-width='3'/%3E%3C/svg%3E",
-    canetas: "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%23FEF3C7'/%3E%3Crect x='60' y='20' width='180' height='160' rx='8' fill='%23FFFFFF' stroke='%23F59E0B' stroke-width='2'/%3E%3Crect x='80' y='40' width='10' height='120' rx='4' fill='%23EF4444'/%3E%3Crect x='98' y='40' width='10' height='120' rx='4' fill='%23F97316'/%3E%3Crect x='116' y='40' width='10' height='120' rx='4' fill='%23FBBF24'/%3E%3Crect x='134' y='40' width='10' height='120' rx='4' fill='%2322C55E'/%3E%3Crect x='152' y='40' width='10' height='120' rx='4' fill='%2306B6D4'/%3E%3Crect x='170' y='40' width='10' height='120' rx='4' fill='%233B82F6'/%3E%3Crect x='188' y='40' width='10' height='120' rx='4' fill='%236366F1'/%3E%3Crect x='206' y='40' width='10' height='120' rx='4' fill='%23A855F7'/%3E%3Ctext x='150' y='172' fill='%23B45309' font-family='sans-serif' font-weight='800' font-size='12' text-anchor='middle'%3EKIT 10 CORES EM GEL%3C/text%3E%3C/svg%3E",
-    pokemon: "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%231E1B4B'/%3E%3Crect x='70' y='20' width='160' height='160' rx='8' fill='%233B82F6' stroke='%23FACC15' stroke-width='4'/%3E%3Ccircle cx='150' cy='95' r='42' fill='%23EF4444' stroke='%23000' stroke-width='3'/%3E%3Cpath d='M108 95H192' stroke='%23000' stroke-width='6'/%3E%3Ccircle cx='150' cy='95' r='14' fill='%23FFF' stroke='%23000' stroke-width='4'/%3E%3Ctext x='150' y='160' fill='%23FEF08A' font-family='sans-serif' font-weight='900' font-size='15' text-anchor='middle'%3EDECK INICIAL%3C/text%3E%3C/svg%3E",
-    revista: "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%23E0E7FF'/%3E%3Crect x='60' y='20' width='180' height='160' rx='6' fill='%23EEF2FF' stroke='%234F46E5' stroke-width='3'/%3E%3Crect x='60' y='20' width='180' height='36' fill='%234F46E5'/%3E%3Ctext x='150' y='44' fill='%23FFF' font-family='sans-serif' font-weight='900' font-size='16' text-anchor='middle'%3EREVISTAS & VARIEDADES%3C/text%3E%3Crect x='80' y='70' width='140' height='80' rx='4' fill='%23C7D2FE'/%3E%3Ctext x='150' y='115' fill='%233730A3' font-family='sans-serif' font-weight='800' font-size='13' text-anchor='middle'%3EPASSATEMPOS%3C/text%3E%3C/svg%3E"
+    album:
+      "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%231E3A8A'/%3E%3Crect x='40' y='20' width='220' height='160' rx='8' fill='%232563EB' stroke='%23FBBF24' stroke-width='4'/%3E%3Ctext x='150' y='65' fill='%23FFF' font-family='sans-serif' font-weight='900' font-size='22' text-anchor='middle'%3EÁLBUM DE%3C/text%3E%3Ctext x='150' y='95' fill='%23FEF08A' font-family='sans-serif' font-weight='900' font-size='22' text-anchor='middle'%3EFIGURINHAS%3C/text%3E%3Ctext x='150' y='125' fill='%2393C5FD' font-family='sans-serif' font-weight='700' font-size='14' text-anchor='middle'%3ECOPA 2026%3C/text%3E%3Ccircle cx='150' cy='155' r='16' fill='%23FFF' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M150 143L157 149L154 158L146 158L143 149Z' fill='%23000'/%3E%3C/svg%3E",
+    jornal:
+      "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%23E2E8F0'/%3E%3Crect x='30' y='25' width='240' height='150' rx='4' fill='%23F8FAFC' stroke='%2394A3B8' stroke-width='2'/%3E%3Crect x='45' y='40' width='210' height='26' fill='%230F172A'/%3E%3Ctext x='150' y='58' fill='%23FFF' font-family='serif' font-weight='900' font-size='16' text-anchor='middle'%3EJORNAL DO DIA%3C/text%3E%3Crect x='45' y='75' width='100' height='60' fill='%23CBD5E1'/%3E%3Cline x1='155' y1='80' x2='255' y2='80' stroke='%23334155' stroke-width='4'/%3E%3Cline x1='155' y1='92' x2='255' y2='92' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='155' y1='104' x2='255' y2='104' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='155' y1='116' x2='240' y2='116' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='45' y1='145' x2='255' y2='145' stroke='%2364748B' stroke-width='3'/%3E%3Cline x1='45' y1='155' x2='200' y2='155' stroke='%2364748B' stroke-width='3'/%3E%3C/svg%3E",
+    canetas:
+      "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%23FEF3C7'/%3E%3Crect x='60' y='20' width='180' height='160' rx='8' fill='%23FFFFFF' stroke='%23F59E0B' stroke-width='2'/%3E%3Crect x='80' y='40' width='10' height='120' rx='4' fill='%23EF4444'/%3E%3Crect x='98' y='40' width='10' height='120' rx='4' fill='%23F97316'/%3E%3Crect x='116' y='40' width='10' height='120' rx='4' fill='%23FBBF24'/%3E%3Crect x='134' y='40' width='10' height='120' rx='4' fill='%2322C55E'/%3E%3Crect x='152' y='40' width='10' height='120' rx='4' fill='%2306B6D4'/%3E%3Crect x='170' y='40' width='10' height='120' rx='4' fill='%233B82F6'/%3E%3Crect x='188' y='40' width='10' height='120' rx='4' fill='%236366F1'/%3E%3Crect x='206' y='40' width='10' height='120' rx='4' fill='%23A855F7'/%3E%3Ctext x='150' y='172' fill='%23B45309' font-family='sans-serif' font-weight='800' font-size='12' text-anchor='middle'%3EKIT 10 CORES EM GEL%3C/text%3E%3C/svg%3E",
+    pokemon:
+      "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%231E1B4B'/%3E%3Crect x='70' y='20' width='160' height='160' rx='8' fill='%233B82F6' stroke='%23FACC15' stroke-width='4'/%3E%3Ccircle cx='150' cy='95' r='42' fill='%23EF4444' stroke='%23000' stroke-width='3'/%3E%3Cpath d='M108 95H192' stroke='%23000' stroke-width='6'/%3E%3Ccircle cx='150' cy='95' r='14' fill='%23FFF' stroke='%23000' stroke-width='4'/%3E%3Ctext x='150' y='160' fill='%23FEF08A' font-family='sans-serif' font-weight='900' font-size='15' text-anchor='middle'%3EDECK INICIAL%3C/text%3E%3C/svg%3E",
+    revista:
+      "data:image/svg+xml,%3Csvg width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%23E0E7FF'/%3E%3Crect x='60' y='20' width='180' height='160' rx='6' fill='%23EEF2FF' stroke='%234F46E5' stroke-width='3'/%3E%3Crect x='60' y='20' width='180' height='36' fill='%234F46E5'/%3E%3Ctext x='150' y='44' fill='%23FFF' font-family='sans-serif' font-weight='900' font-size='16' text-anchor='middle'%3EREVISTAS & VARIEDADES%3C/text%3E%3Crect x='80' y='70' width='140' height='80' rx='4' fill='%23C7D2FE'/%3E%3Ctext x='150' y='115' fill='%233730A3' font-family='sans-serif' font-weight='800' font-size='13' text-anchor='middle'%3EPASSATEMPOS%3C/text%3E%3C/svg%3E",
   };
 
   // BANCO DE DADOS INICIAL DE LOJAS COM ENDEREÇO REAL PARA REFERÊNCIA NO MAPA
@@ -43,7 +48,7 @@
       thumb: PRODUCT_PRESETS.album,
       status: "Aberta",
       email: "banca@exemplo.com",
-      realCoordinates: "Ponto A: Esquina Av. Heliópolis"
+      realCoordinates: "Ponto A: Esquina Av. Heliópolis",
     },
     {
       id: "papelaria-praca",
@@ -56,7 +61,7 @@
       thumb: PRODUCT_PRESETS.canetas,
       status: "Aberta",
       email: "papelaria@exemplo.com",
-      realCoordinates: "Ponto B: Em frente à Praça"
+      realCoordinates: "Ponto B: Em frente à Praça",
     },
     {
       id: "livraria-bairro",
@@ -69,7 +74,7 @@
       thumb: PRODUCT_PRESETS.pokemon,
       status: "Aberta",
       email: "livraria@exemplo.com",
-      realCoordinates: "Ponto C: Rua das Flores"
+      realCoordinates: "Ponto C: Rua das Flores",
     },
     {
       id: "mercadinho-ze",
@@ -82,8 +87,8 @@
       thumb: PRODUCT_PRESETS.jornal,
       status: "Aberta",
       email: "ze@exemplo.com",
-      realCoordinates: "Ponto D: Rua do Comércio"
-    }
+      realCoordinates: "Ponto D: Rua do Comércio",
+    },
   ];
 
   // PRODUTOS INICIAIS BASEADOS NOS ESBOÇOS
@@ -96,11 +101,12 @@
       store: "Banca Bueno",
       distance: "500 m",
       stock: 50,
-      price: 12.00,
+      price: 12.0,
       image: PRODUCT_PRESETS.album,
-      description: "Álbum oficial capa tradicional com páginas numeradas para colar todas as figurinhas da Copa 2026.",
+      description:
+        "Álbum oficial capa tradicional com páginas numeradas para colar todas as figurinhas da Copa 2026.",
       demand: "Alta procura",
-      featured: true
+      featured: true,
     },
     {
       id: 2,
@@ -110,11 +116,12 @@
       store: "Banca Bueno",
       distance: "500 m",
       stock: 30,
-      price: 2.50,
+      price: 2.5,
       image: PRODUCT_PRESETS.jornal,
-      description: "Edição matutina com notícias da cidade, economia, esportes e caderno de variedades.",
+      description:
+        "Edição matutina com notícias da cidade, economia, esportes e caderno de variedades.",
       demand: "Diária",
-      featured: true
+      featured: true,
     },
     {
       id: 3,
@@ -124,11 +131,12 @@
       store: "Papelaria da Praça",
       distance: "1,2 km",
       stock: 0,
-      price: 19.90,
+      price: 19.9,
       image: PRODUCT_PRESETS.canetas,
-      description: "Kit com 10 canetas em gel ponta fina 0.7mm cores sortidas para estudo e lettering.",
+      description:
+        "Kit com 10 canetas em gel ponta fina 0.7mm cores sortidas para estudo e lettering.",
       demand: "Em breve",
-      featured: true
+      featured: true,
     },
     {
       id: 4,
@@ -138,11 +146,12 @@
       store: "Livraria do Bairro",
       distance: "2,3 km",
       stock: 5,
-      price: 49.90,
+      price: 49.9,
       image: PRODUCT_PRESETS.pokemon,
-      description: "Baralho inicial completo com 60 cartas pronto para jogar, moeda metalizada e playmat.",
+      description:
+        "Baralho inicial completo com 60 cartas pronto para jogar, moeda metalizada e playmat.",
       demand: "Colecionável",
-      featured: true
+      featured: true,
     },
     {
       id: 5,
@@ -152,12 +161,13 @@
       store: "Banca Bueno",
       distance: "500 m",
       stock: 20,
-      price: 15.00,
+      price: 15.0,
       image: PRODUCT_PRESETS.revista,
-      description: "Seleção variada de revistas semanais, passatempos, culinária e tecnologia.",
+      description:
+        "Seleção variada de revistas semanais, passatempos, culinária e tecnologia.",
       demand: "Recorrente",
-      featured: false
-    }
+      featured: false,
+    },
   ];
 
   // RESERVAS INICIAIS (BASEADAS NO ESBOÇO CELULAR TELA 4)
@@ -172,11 +182,11 @@
       customerName: "Maria da Silva",
       customerPhone: "(11) 98765-1122",
       quantity: 1,
-      unitPrice: 12.00,
-      totalPrice: 12.00,
+      unitPrice: 12.0,
+      totalPrice: 12.0,
       status: "Pendente",
       deadline: "Retirar até: 12/04",
-      createdAt: "10/04 às 09:30"
+      createdAt: "10/04 às 09:30",
     },
     {
       code: "#3271",
@@ -188,11 +198,11 @@
       customerName: "Maria da Silva",
       customerPhone: "(11) 98765-1122",
       quantity: 1,
-      unitPrice: 2.50,
-      totalPrice: 2.50,
+      unitPrice: 2.5,
+      totalPrice: 2.5,
       status: "Confirmada",
       deadline: "Retirar até: 10/04",
-      createdAt: "09/04 às 07:15"
+      createdAt: "09/04 às 07:15",
     },
     {
       code: "#2840",
@@ -204,12 +214,12 @@
       customerName: "Maria da Silva",
       customerPhone: "(11) 98765-1122",
       quantity: 1,
-      unitPrice: 15.00,
-      totalPrice: 15.00,
+      unitPrice: 15.0,
+      totalPrice: 15.0,
       status: "Concluída",
       deadline: "Retirado em: 08/04",
-      createdAt: "08/04 às 11:20"
-    }
+      createdAt: "08/04 às 11:20",
+    },
   ];
 
   // CONTAS DE USUÁRIOS
@@ -219,7 +229,7 @@
       type: "customer",
       name: "Maria da Silva",
       email: "cliente@exemplo.com",
-      phone: "(11) 98765-1122"
+      phone: "(11) 98765-1122",
     },
     {
       id: "usr-renato",
@@ -228,8 +238,8 @@
       storeName: "Banca Bueno",
       storeId: "banca-bueno",
       email: "banca@exemplo.com",
-      phone: "(11) 98256-5530"
-    }
+      phone: "(11) 98256-5530",
+    },
   ];
 
   // ESTADO GLOBAL DA APLICAÇÃO
@@ -248,9 +258,9 @@
   let currentProductImageBase64 = null; // Para upload de imagem
 
   /**
- * Clona um objeto de forma segura em qualquer navegador.
- * structuredClone não existe em navegadores antigos; usamos JSON como fallback.
- */
+   * Clona um objeto de forma segura em qualquer navegador.
+   * structuredClone não existe em navegadores antigos; usamos JSON como fallback.
+   */
   function safeClone(obj) {
     try {
       return typeof structuredClone === "function"
@@ -267,7 +277,10 @@
       if (raw === null) return safeClone(fallback);
       return JSON.parse(raw);
     } catch (err) {
-      console.warn(`[loadStorage] Falha ao ler "${key}", usando fallback.`, err);
+      console.warn(
+        `[loadStorage] Falha ao ler "${key}", usando fallback.`,
+        err,
+      );
       return safeClone(fallback);
     }
   }
@@ -287,7 +300,7 @@
     } catch (err) {
       if (err && (err.name === "QuotaExceededError" || err.code === 22)) {
         showToast(
-          "⚠️ Armazenamento cheio! Remova fotos antigas de produtos ou limpe dados do navegador."
+          "⚠️ Armazenamento cheio! Remova fotos antigas de produtos ou limpe dados do navegador.",
         );
         console.error("[saveStorage] QuotaExceededError:", err);
       } else {
@@ -301,7 +314,7 @@
   function formatMoney(value) {
     return Number(value || 0).toLocaleString("pt-BR", {
       style: "currency",
-      currency: "BRL"
+      currency: "BRL",
     });
   }
 
@@ -315,7 +328,7 @@
       month: "2-digit",
       year: "numeric",
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
     });
   }
 
@@ -332,7 +345,8 @@
       }
 
       const reader = new FileReader();
-      reader.onerror = () => reject(new Error("Erro ao ler o arquivo de imagem."));
+      reader.onerror = () =>
+        reject(new Error("Erro ao ler o arquivo de imagem."));
       reader.onload = (e) => {
         const img = new Image();
         img.onerror = () => reject(new Error("Erro ao decodificar a imagem."));
@@ -357,12 +371,14 @@
 
           // Gera Data URL compactado em JPEG
           const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
-          const compressedBytes = Math.round((compressedDataUrl.length * 3) / 4);
+          const compressedBytes = Math.round(
+            (compressedDataUrl.length * 3) / 4,
+          );
 
           resolve({
             dataUrl: compressedDataUrl,
             originalSize: file.size,
-            compressedSize: compressedBytes
+            compressedSize: compressedBytes,
           });
         };
         img.src = e.target.result;
@@ -379,13 +395,17 @@
   }
 
   function escapeHTML(str) {
-    return String(str || "").replace(/[&<>"']/g, c => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    }[c]));
+    return String(str || "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
+    );
   }
 
   function showToast(msg) {
@@ -408,7 +428,9 @@
   const searchInput = document.getElementById("search-input");
   const clearSearchBtn = document.getElementById("clear-search-btn");
   const searchSuggestions = document.getElementById("search-suggestions");
-  const sideReservationsList = document.getElementById("side-reservations-list");
+  const sideReservationsList = document.getElementById(
+    "side-reservations-list",
+  );
   const sideResBadge = document.getElementById("side-res-badge");
 
   // MODAIS
@@ -436,7 +458,7 @@
   // Migração/Sincronização de dados persistidos no localStorage
   function migrateStorage() {
     let updated = false;
-    stores.forEach(s => {
+    stores.forEach((s) => {
       if (s.id === "banca-renato") {
         s.id = "banca-bueno";
         s.name = "Banca Bueno";
@@ -444,14 +466,14 @@
         updated = true;
       }
     });
-    products.forEach(p => {
+    products.forEach((p) => {
       if (p.storeId === "banca-renato") {
         p.storeId = "banca-bueno";
         p.store = "Banca Bueno";
         updated = true;
       }
     });
-    reservations.forEach(r => {
+    reservations.forEach((r) => {
       if (r.storeId === "banca-renato") {
         r.storeId = "banca-bueno";
         r.store = "Banca Bueno";
@@ -535,14 +557,24 @@
   }
 
   function attachAuthButtonEvents() {
-    const logoutBtns = document.querySelectorAll("#quick-logout-btn, #header-logout-btn");
-    logoutBtns.forEach(b => b.addEventListener("click", handleLogout));
+    const logoutBtns = document.querySelectorAll(
+      "#quick-logout-btn, #header-logout-btn",
+    );
+    logoutBtns.forEach((b) => b.addEventListener("click", handleLogout));
 
-    const custLoginBtns = document.querySelectorAll("#quick-login-cust-btn, #header-login-cust-btn");
-    custLoginBtns.forEach(b => b.addEventListener("click", () => openAuthModal("customer")));
+    const custLoginBtns = document.querySelectorAll(
+      "#quick-login-cust-btn, #header-login-cust-btn",
+    );
+    custLoginBtns.forEach((b) =>
+      b.addEventListener("click", () => openAuthModal("customer")),
+    );
 
-    const merchLoginBtns = document.querySelectorAll("#quick-login-merch-btn, #header-login-merch-btn");
-    merchLoginBtns.forEach(b => b.addEventListener("click", () => openAuthModal("merchant")));
+    const merchLoginBtns = document.querySelectorAll(
+      "#quick-login-merch-btn, #header-login-merch-btn",
+    );
+    merchLoginBtns.forEach((b) =>
+      b.addEventListener("click", () => openAuthModal("merchant")),
+    );
   }
 
   function openAuthModal(type) {
@@ -594,7 +626,9 @@
       `;
     } else {
       // Bottom Nav para Cliente (Esboço Celular Cliente)
-      const myResCount = reservations.filter(r => r.status === "Pendente" || r.status === "Aguardando Retirada").length;
+      const myResCount = reservations.filter(
+        (r) => r.status === "Pendente" || r.status === "Aguardando Retirada",
+      ).length;
       mobileBottomNav.innerHTML = `
         <button class="mob-nav-item ${currentNav === "client-home" ? "active" : ""}" data-nav="client-home">
           <span class="mob-icon">🏠</span>
@@ -616,7 +650,7 @@
       `;
     }
 
-    mobileBottomNav.querySelectorAll(".mob-nav-item").forEach(btn => {
+    mobileBottomNav.querySelectorAll(".mob-nav-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = btn.dataset.nav;
         if (target === "merchant-edit-profile") {
@@ -645,7 +679,7 @@
   }
 
   function updateNavButtonsState() {
-    document.querySelectorAll(".side-nav-item").forEach(btn => {
+    document.querySelectorAll(".side-nav-item").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.nav === currentNav);
     });
     renderMobileBottomNav();
@@ -703,15 +737,21 @@
       { name: "Games e colecionáveis", icon: "🎮", colorClass: "icon-blue" },
       { name: "Papelaria", icon: "✏️", colorClass: "icon-blue" },
       { name: "Presentes", icon: "🎁", colorClass: "icon-blue" },
-      { name: "E muito mais!", icon: "🏷️", colorClass: "icon-blue" }
+      { name: "E muito mais!", icon: "🏷️", colorClass: "icon-blue" },
     ];
 
     const term = activeSearchTerm.trim().toLowerCase();
-    const filteredProducts = products.filter(p => {
+    const filteredProducts = products.filter((p) => {
       // "E muito mais!" é atalho para "ver todas", não um filtro real
-      const matchCat = !activeCategory || activeCategory === "E muito mais!" || p.category === activeCategory;
-      const matchSearch = !term || [p.name, p.store, p.category, p.description].some(v => (v || "").toLowerCase().includes(term)
-      );
+      const matchCat =
+        !activeCategory ||
+        activeCategory === "E muito mais!" ||
+        p.category === activeCategory;
+      const matchSearch =
+        !term ||
+        [p.name, p.store, p.category, p.description].some((v) =>
+          (v || "").toLowerCase().includes(term),
+        );
       return matchCat && matchSearch;
     });
 
@@ -734,14 +774,18 @@
           <button class="btn-link-action" id="btn-see-all-cats">Ver todas ➔</button>
         </div>
         <div class="categories-circles-row">
-          ${categories.map(c => `
+          ${categories
+            .map(
+              (c) => `
             <button class="cat-circle-btn ${activeCategory === c.name ? "active" : ""}" data-cat="${c.name}">
               <div class="cat-circle-icon ${c.colorClass}">
                 ${c.icon}
               </div>
               <span class="cat-circle-label">${escapeHTML(c.name)}</span>
             </button>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </div>
       </section>
 
@@ -758,16 +802,20 @@
           ${activeCategory ? `<button class="btn-link-action" id="btn-clear-cat-filter">Limpar filtro</button>` : ""}
         </div>
 
-        ${filteredProducts.length ? `
+        ${
+          filteredProducts.length
+            ? `
           <div class="products-grid">
-            ${filteredProducts.map(p => `
+            ${filteredProducts
+              .map(
+                (p) => `
               <article class="product-card" data-id="${p.id}">
                 <button class="product-fav-btn" title="Favoritar produto">♡</button>
                 <div class="product-img-wrap">
                   <img src="${p.image}" alt="${escapeHTML(p.name)}" class="product-real-img" loading="lazy">
                   <div class="product-stock-tag">
-                    <span class="${p.stock > 0 ? "pill-disponivel" : (p.demand === "Em breve" ? "pill-embreve" : "pill-esgotado")}">
-                      ${p.stock > 0 ? "✓ Disponível" : (p.demand === "Em breve" ? "Em breve" : "Esgotado")}
+                    <span class="${p.stock > 0 ? "pill-disponivel" : p.demand === "Em breve" ? "pill-embreve" : "pill-esgotado"}">
+                      ${p.stock > 0 ? "✓ Disponível" : p.demand === "Em breve" ? "Em breve" : "Esgotado"}
                     </span>
                   </div>
                 </div>
@@ -782,21 +830,25 @@
                   <div class="product-price-action-row">
                     <span class="product-card-price">${formatMoney(p.price)}</span>
                     <button class="btn-reserve-action ${!currentUser || currentUser.type !== "customer" ? "locked-login" : ""}" data-product-id="${p.id}" ${p.stock < 1 ? "disabled" : ""}>
-                      ${p.stock < 1 ? "Indisponível" : (!currentUser || currentUser.type !== "customer" ? "Entrar para reservar" : "💬 Reservar")}
+                      ${p.stock < 1 ? "Indisponível" : !currentUser || currentUser.type !== "customer" ? "Entrar para reservar" : "💬 Reservar"}
                     </button>
                   </div>
                 </div>
               </article>
-            `).join("")}
+            `,
+              )
+              .join("")}
           </div>
-        ` : `
+        `
+            : `
           <div class="text-center" style="padding: 40px 20px;">
             <p style="font-size:2.8rem; margin-bottom:8px;">🔍</p>
             <h3>Nenhum produto encontrado</h3>
             <p class="muted-info">Não encontramos itens disponíveis para esse filtro ou termo de busca.</p>
             <button class="btn-secondary" id="btn-reset-search">Limpar busca e filtros</button>
           </div>
-        `}
+        `
+        }
       </section>
 
       <!-- Lojas Mais Próximas (Esboço Desktop) -->
@@ -806,7 +858,9 @@
           <button class="btn-link-action" id="btn-see-all-stores">Ver todas ➔</button>
         </div>
         <div class="stores-horizontal-list">
-          ${stores.map(s => `
+          ${stores
+            .map(
+              (s) => `
             <div class="store-compact-card" data-store-id="${s.id}">
               <img src="${s.thumb}" alt="${escapeHTML(s.name)}" class="store-compact-thumb">
               <div class="store-compact-info">
@@ -818,13 +872,15 @@
                 </div>
               </div>
             </div>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </div>
       </section>
     `;
 
     // Eventos da Home
-    mainContent.querySelectorAll(".cat-circle-btn").forEach(btn => {
+    mainContent.querySelectorAll(".cat-circle-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const cat = btn.dataset.cat;
 
@@ -841,46 +897,63 @@
     });
 
     const seeAllCats = mainContent.querySelector("#btn-see-all-cats");
-    if (seeAllCats) seeAllCats.addEventListener("click", () => { activeCategory = ""; renderClientHome(); });
+    if (seeAllCats)
+      seeAllCats.addEventListener("click", () => {
+        activeCategory = "";
+        renderClientHome();
+      });
 
     const clearCatFilter = mainContent.querySelector("#btn-clear-cat-filter");
-    if (clearCatFilter) clearCatFilter.addEventListener("click", () => { activeCategory = ""; renderClientHome(); });
+    if (clearCatFilter)
+      clearCatFilter.addEventListener("click", () => {
+        activeCategory = "";
+        renderClientHome();
+      });
 
     const resetSearch = mainContent.querySelector("#btn-reset-search");
-    if (resetSearch) resetSearch.addEventListener("click", () => {
-      activeCategory = "";
-      activeSearchTerm = "";
-      if (searchInput) searchInput.value = "";
-      renderClientHome();
-    });
+    if (resetSearch)
+      resetSearch.addEventListener("click", () => {
+        activeCategory = "";
+        activeSearchTerm = "";
+        if (searchInput) searchInput.value = "";
+        renderClientHome();
+      });
 
     const seeAllStores = mainContent.querySelector("#btn-see-all-stores");
-    if (seeAllStores) seeAllStores.addEventListener("click", () => navigateTo("client-stores"));
+    if (seeAllStores)
+      seeAllStores.addEventListener("click", () => navigateTo("client-stores"));
 
-    mainContent.querySelectorAll(".btn-reserve-action").forEach(btn => {
+    mainContent.querySelectorAll(".btn-reserve-action").forEach((btn) => {
       btn.addEventListener("click", () => {
         const prodId = Number(btn.dataset.productId);
         handleReserveClick(prodId);
       });
     });
 
-    mainContent.querySelectorAll(".product-card").forEach(card => {
+    mainContent.querySelectorAll(".product-card").forEach((card) => {
       card.addEventListener("click", (e) => {
-        if (e.target.closest(".btn-reserve-action") || e.target.closest(".product-fav-btn") || e.target.closest(".link-map-inline")) return;
+        if (
+          e.target.closest(".btn-reserve-action") ||
+          e.target.closest(".product-fav-btn") ||
+          e.target.closest(".link-map-inline")
+        )
+          return;
         const id = Number(card.dataset.id);
         openProductDetailModal(id);
       });
     });
 
-    mainContent.querySelectorAll(".link-map-inline").forEach(link => {
+    mainContent.querySelectorAll(".link-map-inline").forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
         openMapModalWithStore(link.dataset.storeId);
       });
     });
 
-    mainContent.querySelectorAll(".store-compact-card").forEach(c => {
-      c.addEventListener("click", () => openMapModalWithStore(c.dataset.storeId));
+    mainContent.querySelectorAll(".store-compact-card").forEach((c) => {
+      c.addEventListener("click", () =>
+        openMapModalWithStore(c.dataset.storeId),
+      );
     });
   }
 
@@ -888,7 +961,7 @@
   // INTERCEPTADOR DE RESERVA: EXIGE CLIENTE LOGADO
   // --------------------------------------------------------------------------
   function handleReserveClick(productId) {
-    const product = products.find(p => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     if (!product || product.stock < 1) return;
 
     if (!currentUser) {
@@ -898,7 +971,9 @@
     }
 
     if (currentUser.type !== "customer") {
-      showToast("Você está no perfil de Comerciante. Entre como Cliente para reservar.");
+      showToast(
+        "Você está no perfil de Comerciante. Entre como Cliente para reservar.",
+      );
       return;
     }
 
@@ -910,7 +985,7 @@
   // 2. MODAL DE DETALHES DO PRODUTO (ESBOÇO CELULAR TELA 2)
   // --------------------------------------------------------------------------
   function openProductDetailModal(productId) {
-    const product = products.find(p => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     if (!product) return;
     selectedProductForDetail = product;
 
@@ -939,7 +1014,7 @@
 
       <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
         <button class="btn-primary full-btn" id="btn-modal-do-reserve" ${product.stock < 1 ? "disabled" : ""}>
-          ${product.stock < 1 ? "Produto indisponível" : (!currentUser || currentUser.type !== "customer" ? "Fazer login para reservar" : "Reservar")}
+          ${product.stock < 1 ? "Produto indisponível" : !currentUser || currentUser.type !== "customer" ? "Fazer login para reservar" : "Reservar"}
         </button>
         <a class="btn-whatsapp-outline" target="_blank" rel="noopener noreferrer" href="https://wa.me/5511987654321?text=${encodeURIComponent(`Olá! Vi o produto "${product.name}" no Tem Aí? Tem Aqui! e gostaria de tirar uma dúvida.`)}">
           💬 Falar com o comerciante
@@ -958,7 +1033,9 @@
       });
     }
 
-    const doReserveBtn = productDetailBody.querySelector("#btn-modal-do-reserve");
+    const doReserveBtn = productDetailBody.querySelector(
+      "#btn-modal-do-reserve",
+    );
     if (doReserveBtn) {
       doReserveBtn.addEventListener("click", () => {
         productDetailModal.close();
@@ -999,7 +1076,9 @@
 
     const qty = parseInt(qtyInput.value, 10) || 1;
     unitPriceEl.textContent = formatMoney(selectedProductForReserve.price);
-    totalPriceEl.textContent = formatMoney(qty * selectedProductForReserve.price);
+    totalPriceEl.textContent = formatMoney(
+      qty * selectedProductForReserve.price,
+    );
   }
 
   // --------------------------------------------------------------------------
@@ -1016,23 +1095,25 @@
         <button class="btn-primary" id="btn-login-to-see-res">Entrar como Cliente</button>
       </section>
     `;
-      mainContent.querySelector("#btn-login-to-see-res").addEventListener("click", () => openAuthModal("customer"));
+      mainContent
+        .querySelector("#btn-login-to-see-res")
+        .addEventListener("click", () => openAuthModal("customer"));
       return;
     }
 
     // Filtra somente as reservas do cliente conectado
     const myReservations = reservations.filter(
-      r => r.customerId === currentUser.id
+      (r) => r.customerId === currentUser.id,
     );
 
     // Separa as reservas ativas
     const pending = myReservations.filter(
-      r => r.status === "Pendente" || r.status === "Aguardando Retirada"
+      (r) => r.status === "Pendente" || r.status === "Aguardando Retirada",
     );
 
     // Separa o histórico
     const history = myReservations.filter(
-      r => r.status !== "Pendente" && r.status !== "Aguardando Retirada"
+      (r) => r.status !== "Pendente" && r.status !== "Aguardando Retirada",
     );
 
     mainContent.innerHTML = `
@@ -1056,19 +1137,26 @@
     </section>
   `;
 
-    mainContent.querySelector("#btn-back-home-res").addEventListener("click", () => navigateTo("client-home"));
+    mainContent
+      .querySelector("#btn-back-home-res")
+      .addEventListener("click", () => navigateTo("client-home"));
 
-    const tabBtns = mainContent.querySelectorAll("#reservations-client-tabs .segmented-tab");
+    const tabBtns = mainContent.querySelectorAll(
+      "#reservations-client-tabs .segmented-tab",
+    );
 
-    tabBtns.forEach(btn => {
+    tabBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        tabBtns.forEach(b => b.classList.remove("active"));
+        tabBtns.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
 
         const isAct = btn.dataset.tab === "active";
         const container = mainContent.querySelector("#client-res-content");
 
-        container.innerHTML = renderClientResCards(isAct ? pending : history, isAct);
+        container.innerHTML = renderClientResCards(
+          isAct ? pending : history,
+          isAct,
+        );
 
         attachClientResEvents();
       });
@@ -1076,7 +1164,6 @@
 
     attachClientResEvents();
   }
-
 
   function renderClientResCards(list, isActive) {
     if (!list.length) {
@@ -1091,7 +1178,9 @@
 
     return `
       <div style="display:flex; flex-direction:column; gap:14px;">
-        ${list.map(r => `
+        ${list
+          .map(
+            (r) => `
           <div class="merchant-res-item-card">
             <div class="merchant-res-client-meta">
               <div class="client-avatar-circle">🎟️</div>
@@ -1102,30 +1191,40 @@
               </div>
             </div>
             <div class="merchant-res-actions">
-              <span class="res-status-pill ${r.status === "Pendente" ? "status-pendente" : (r.status === "Confirmada" ? "status-confirmada" : "status-concluida")}">
+              <span class="res-status-pill ${r.status === "Pendente" ? "status-pendente" : r.status === "Confirmada" ? "status-confirmada" : "status-concluida"}">
                 ${escapeHTML(r.status)}
               </span>
-              ${isActive ? `
+              ${
+                isActive
+                  ? `
                 <button class="btn-secondary btn-cancel-client-res" data-code="${r.code}">
                   Cancelar
                 </button>
-              ` : ""}
+              `
+                  : ""
+              }
             </div>
           </div>
-        `).join("")}
+        `,
+          )
+          .join("")}
       </div>
     `;
   }
 
   function attachClientResEvents() {
-    mainContent.querySelectorAll(".btn-cancel-client-res").forEach(btn => {
+    mainContent.querySelectorAll(".btn-cancel-client-res").forEach((btn) => {
       btn.addEventListener("click", () => {
         const code = btn.dataset.code;
-        if (confirm(`Deseja cancelar a reserva ${code}? O produto voltará ao estoque do comércio.`)) {
-          const res = reservations.find(r => r.code === code);
+        if (
+          confirm(
+            `Deseja cancelar a reserva ${code}? O produto voltará ao estoque do comércio.`,
+          )
+        ) {
+          const res = reservations.find((r) => r.code === code);
           if (res) {
             res.status = "Cancelada";
-            const product = products.find(p => p.id === res.productId);
+            const product = products.find((p) => p.id === res.productId);
             if (product) product.stock += res.quantity;
             saveStorage();
             renderSideReservationsWidget();
@@ -1141,9 +1240,14 @@
   // 5. TELA DO COMERCIANTE: PAINEL PRINCIPAL (ESBOÇO CELULAR TELA 1)
   // --------------------------------------------------------------------------
   function renderMerchantDashboard() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
-    const myProducts = products.filter(p => p.storeId === store.id);
-    const myReservations = reservations.filter(r => r.storeId === store.id && r.status === "Pendente");
+    const store =
+      stores.find(
+        (s) => s.id === (currentUser ? currentUser.storeId : "banca-bueno"),
+      ) || stores[0];
+    const myProducts = products.filter((p) => p.storeId === store.id);
+    const myReservations = reservations.filter(
+      (r) => r.storeId === store.id && r.status === "Pendente",
+    );
 
     mainContent.innerHTML = `
       <!-- Cabeçalho do Comércio com Botão de Edição de Dados -->
@@ -1206,7 +1310,11 @@
         </div>
 
         <div class="merchant-reservations-grid">
-          ${myReservations.length ? myReservations.map(r => `
+          ${
+            myReservations.length
+              ? myReservations
+                  .map(
+                    (r) => `
             <div class="merchant-res-item-card">
               <div class="merchant-res-client-meta">
                 <div class="client-avatar-circle">👤</div>
@@ -1223,23 +1331,39 @@
                 </button>
               </div>
             </div>
-          `).join("") : `<p class="muted-info" style="padding:20px; text-align:center;">Nenhuma reserva pendente no momento.</p>`}
+          `,
+                  )
+                  .join("")
+              : `<p class="muted-info" style="padding:20px; text-align:center;">Nenhuma reserva pendente no momento.</p>`
+          }
         </div>
       </section>
     `;
 
     // Eventos do painel
-    mainContent.querySelector("#btn-edit-store-data").addEventListener("click", openMerchantEditModal);
-    mainContent.querySelector("#btn-view-client-mode").addEventListener("click", () => navigateTo("client-home"));
-    mainContent.querySelector("#btn-go-add-prod").addEventListener("click", () => navigateTo("merchant-add-product"));
-    mainContent.querySelector("#btn-go-my-prods").addEventListener("click", () => navigateTo("merchant-products"));
-    mainContent.querySelector("#btn-go-stats").addEventListener("click", () => navigateTo("merchant-stats"));
-    mainContent.querySelector("#btn-link-all-res").addEventListener("click", () => navigateTo("merchant-reservations"));
+    mainContent
+      .querySelector("#btn-edit-store-data")
+      .addEventListener("click", openMerchantEditModal);
+    mainContent
+      .querySelector("#btn-view-client-mode")
+      .addEventListener("click", () => navigateTo("client-home"));
+    mainContent
+      .querySelector("#btn-go-add-prod")
+      .addEventListener("click", () => navigateTo("merchant-add-product"));
+    mainContent
+      .querySelector("#btn-go-my-prods")
+      .addEventListener("click", () => navigateTo("merchant-products"));
+    mainContent
+      .querySelector("#btn-go-stats")
+      .addEventListener("click", () => navigateTo("merchant-stats"));
+    mainContent
+      .querySelector("#btn-link-all-res")
+      .addEventListener("click", () => navigateTo("merchant-reservations"));
 
-    mainContent.querySelectorAll(".btn-confirm-pickup").forEach(btn => {
+    mainContent.querySelectorAll(".btn-confirm-pickup").forEach((btn) => {
       btn.addEventListener("click", () => {
         const code = btn.dataset.code;
-        const res = reservations.find(r => r.code === code);
+        const res = reservations.find((r) => r.code === code);
         if (res) {
           res.status = "Concluída";
           saveStorage();
@@ -1254,8 +1378,11 @@
   // 6. TELA DO COMERCIANTE: MEUS PRODUTOS (ESBOÇO CELULAR TELA 3)
   // --------------------------------------------------------------------------
   function renderMerchantProductsList() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
-    const myProducts = products.filter(p => p.storeId === store.id);
+    const store =
+      stores.find(
+        (s) => s.id === (currentUser ? currentUser.storeId : "banca-bueno"),
+      ) || stores[0];
+    const myProducts = products.filter((p) => p.storeId === store.id);
 
     mainContent.innerHTML = `
       <section class="content-section">
@@ -1275,7 +1402,9 @@
         </div>
 
         <div class="merchant-products-list">
-          ${myProducts.map(p => `
+          ${myProducts
+            .map(
+              (p) => `
             <div class="merchant-prod-row">
               <div class="merchant-prod-info">
                 <img src="${p.image}" alt="${escapeHTML(p.name)}" class="merchant-prod-thumb">
@@ -1293,25 +1422,35 @@
                 </div>
               </div>
             </div>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </div>
       </section>
     `;
 
-    mainContent.querySelector("#btn-back-merch-hub").addEventListener("click", () => navigateTo("merchant-dashboard"));
-    mainContent.querySelector("#btn-add-prod-shortcut").addEventListener("click", () => navigateTo("merchant-add-product"));
+    mainContent
+      .querySelector("#btn-back-merch-hub")
+      .addEventListener("click", () => navigateTo("merchant-dashboard"));
+    mainContent
+      .querySelector("#btn-add-prod-shortcut")
+      .addEventListener("click", () => navigateTo("merchant-add-product"));
 
-    mainContent.querySelectorAll(".btn-stepper-dec").forEach(btn => {
-      btn.addEventListener("click", () => updateStockFast(Number(btn.dataset.id), -1));
+    mainContent.querySelectorAll(".btn-stepper-dec").forEach((btn) => {
+      btn.addEventListener("click", () =>
+        updateStockFast(Number(btn.dataset.id), -1),
+      );
     });
 
-    mainContent.querySelectorAll(".btn-stepper-inc").forEach(btn => {
-      btn.addEventListener("click", () => updateStockFast(Number(btn.dataset.id), 1));
+    mainContent.querySelectorAll(".btn-stepper-inc").forEach((btn) => {
+      btn.addEventListener("click", () =>
+        updateStockFast(Number(btn.dataset.id), 1),
+      );
     });
   }
 
   function updateStockFast(prodId, delta) {
-    const prod = products.find(p => p.id === prodId);
+    const prod = products.find((p) => p.id === prodId);
     if (!prod) return;
     prod.stock = Math.max(0, prod.stock + delta);
     saveStorage();
@@ -1417,7 +1556,9 @@
       </section>
     `;
 
-    mainContent.querySelector("#btn-back-from-add").addEventListener("click", () => navigateTo("merchant-dashboard"));
+    mainContent
+      .querySelector("#btn-back-from-add")
+      .addEventListener("click", () => navigateTo("merchant-dashboard"));
 
     // Eventos do Upload de Imagem
     const dropzone = mainContent.querySelector("#img-dropzone");
@@ -1437,9 +1578,14 @@
           currentProductImageBase64 = result.dataUrl;
           previewThumb.src = currentProductImageBase64;
           previewName.textContent = `${file.name} (${formatBytes(result.compressedSize)})`;
-          showToast(`Imagem otimizada com sucesso (${formatBytes(result.originalSize)} ➔ ${formatBytes(result.compressedSize)})!`);
+          showToast(
+            `Imagem otimizada com sucesso (${formatBytes(result.originalSize)} ➔ ${formatBytes(result.compressedSize)})!`,
+          );
         } catch (err) {
-          console.warn("[upload] Compressão via Canvas falhou. Tentando reduzir qualidade...", err);
+          console.warn(
+            "[upload] Compressão via Canvas falhou. Tentando reduzir qualidade...",
+            err,
+          );
 
           // Tentativa de recompressão mais agressiva
           try {
@@ -1447,7 +1593,9 @@
             currentProductImageBase64 = result.dataUrl;
             previewThumb.src = currentProductImageBase64;
             previewName.textContent = `${file.name} (${formatBytes(result.compressedSize)})`;
-            showToast(`Imagem otimizada em modo leve (${formatBytes(result.compressedSize)}).`);
+            showToast(
+              `Imagem otimizada em modo leve (${formatBytes(result.compressedSize)}).`,
+            );
             return;
           } catch (err2) {
             console.error("[upload] Recompressão também falhou.", err2);
@@ -1460,7 +1608,7 @@
             previewThumb.src = currentProductImageBase64;
             previewName.textContent = file.name;
             showToast(
-              `Imagem "${file.name}" carregada sem compressão. Isso pode encher o armazenamento.`
+              `Imagem "${file.name}" carregada sem compressão. Isso pode encher o armazenamento.`,
             );
           };
           reader.onerror = () => showToast("Não foi possível ler a imagem.");
@@ -1473,7 +1621,7 @@
       fileInput.click();
     });
 
-    mainContent.querySelectorAll(".preset-chip").forEach(chip => {
+    mainContent.querySelectorAll(".preset-chip").forEach((chip) => {
       chip.addEventListener("click", () => {
         const pKey = chip.dataset.preset;
         if (PRODUCT_PRESETS[pKey]) {
@@ -1487,55 +1635,72 @@
 
     // Stepper
     const stockInput = mainContent.querySelector("#prod-stock-input");
-    mainContent.querySelector("#prod-stock-dec").addEventListener("click", () => {
-      let val = Number(stockInput.value) || 0;
-      if (val > 0) stockInput.value = val - 1;
-    });
-    mainContent.querySelector("#prod-stock-inc").addEventListener("click", () => {
-      let val = Number(stockInput.value) || 0;
-      stockInput.value = val + 1;
-    });
+    mainContent
+      .querySelector("#prod-stock-dec")
+      .addEventListener("click", () => {
+        let val = Number(stockInput.value) || 0;
+        if (val > 0) stockInput.value = val - 1;
+      });
+    mainContent
+      .querySelector("#prod-stock-inc")
+      .addEventListener("click", () => {
+        let val = Number(stockInput.value) || 0;
+        stockInput.value = val + 1;
+      });
 
     // Envio do Formulário
-    mainContent.querySelector("#form-add-product").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
-      const name = mainContent.querySelector("#prod-name-input").value.trim();
-      const category = mainContent.querySelector("#prod-cat-input").value;
-      const price = parseFloat(mainContent.querySelector("#prod-price-input").value) || 0;
-      const stock = parseInt(stockInput.value, 10) || 0;
-      const desc = mainContent.querySelector("#prod-desc-input").value.trim() || `Produto disponível na ${store.name}.`;
+    mainContent
+      .querySelector("#form-add-product")
+      .addEventListener("submit", (e) => {
+        e.preventDefault();
+        const store =
+          stores.find(
+            (s) => s.id === (currentUser ? currentUser.storeId : "banca-bueno"),
+          ) || stores[0];
+        const name = mainContent.querySelector("#prod-name-input").value.trim();
+        const category = mainContent.querySelector("#prod-cat-input").value;
+        const price =
+          parseFloat(mainContent.querySelector("#prod-price-input").value) || 0;
+        const stock = parseInt(stockInput.value, 10) || 0;
+        const desc =
+          mainContent.querySelector("#prod-desc-input").value.trim() ||
+          `Produto disponível na ${store.name}.`;
 
-      const newProduct = {
-        id: Date.now(),
-        name,
-        category,
-        storeId: store.id,
-        store: store.name,
-        distance: store.distance,
-        stock,
-        price,
-        image: currentProductImageBase64 || PRODUCT_PRESETS.album,
-        description: desc,
-        demand: "Novo",
-        featured: true
-      };
+        const newProduct = {
+          id: Date.now(),
+          name,
+          category,
+          storeId: store.id,
+          store: store.name,
+          distance: store.distance,
+          stock,
+          price,
+          image: currentProductImageBase64 || PRODUCT_PRESETS.album,
+          description: desc,
+          demand: "Novo",
+          featured: true,
+        };
 
-      products.unshift(newProduct);
-      saveStorage();
-      showToast(`Produto "${name}" cadastrado na sua loja!`);
-      navigateTo("merchant-products");
-    });
+        products.unshift(newProduct);
+        saveStorage();
+        showToast(`Produto "${name}" cadastrado na sua loja!`);
+        navigateTo("merchant-products");
+      });
   }
 
   // --------------------------------------------------------------------------
   // 8. TELA DO COMERCIANTE: RESERVAS RECEBIDAS (ESBOÇO CELULAR TELA 4)
   // --------------------------------------------------------------------------
   function renderMerchantReservationsList() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
-    const myRes = reservations.filter(r => r.storeId === store.id);
-    const toPickup = myRes.filter(r => r.status === "Pendente");
-    const finished = myRes.filter(r => r.status === "Concluída" || r.status === "Confirmada");
+    const store =
+      stores.find(
+        (s) => s.id === (currentUser ? currentUser.storeId : "banca-bueno"),
+      ) || stores[0];
+    const myRes = reservations.filter((r) => r.storeId === store.id);
+    const toPickup = myRes.filter((r) => r.status === "Pendente");
+    const finished = myRes.filter(
+      (r) => r.status === "Concluída" || r.status === "Confirmada",
+    );
 
     mainContent.innerHTML = `
       <section class="content-section">
@@ -1559,16 +1724,22 @@
       </section>
     `;
 
-    mainContent.querySelector("#btn-back-hub-res").addEventListener("click", () => navigateTo("merchant-dashboard"));
+    mainContent
+      .querySelector("#btn-back-hub-res")
+      .addEventListener("click", () => navigateTo("merchant-dashboard"));
 
-    const tabs = mainContent.querySelectorAll("#merchant-res-tabs .segmented-tab");
-    tabs.forEach(t => {
+    const tabs = mainContent.querySelectorAll(
+      "#merchant-res-tabs .segmented-tab",
+    );
+    tabs.forEach((t) => {
       t.addEventListener("click", () => {
-        tabs.forEach(b => b.classList.remove("active"));
+        tabs.forEach((b) => b.classList.remove("active"));
         t.classList.add("active");
         const mode = t.dataset.tab;
-        const targetList = mode === "pickup" ? toPickup : (mode === "finished" ? finished : myRes);
-        mainContent.querySelector("#merchant-res-list-box").innerHTML = renderMerchantResItems(targetList);
+        const targetList =
+          mode === "pickup" ? toPickup : mode === "finished" ? finished : myRes;
+        mainContent.querySelector("#merchant-res-list-box").innerHTML =
+          renderMerchantResItems(targetList);
         attachPickupConfirmEvents();
       });
     });
@@ -1581,7 +1752,9 @@
       return `<p class="muted-info" style="padding:30px; text-align:center;">Nenhuma reserva nesta categoria.</p>`;
     }
 
-    return list.map(r => `
+    return list
+      .map(
+        (r) => `
       <div class="merchant-res-item-card">
         <div class="merchant-res-client-meta">
           <div class="client-avatar-circle">👤</div>
@@ -1592,27 +1765,33 @@
           </div>
         </div>
         <div class="merchant-res-actions">
-          <span class="res-status-pill ${r.status === "Pendente" ? "status-pendente" : (r.status === "Confirmada" ? "status-confirmada" : "status-concluida")}">
+          <span class="res-status-pill ${r.status === "Pendente" ? "status-pendente" : r.status === "Confirmada" ? "status-confirmada" : "status-concluida"}">
             ${escapeHTML(r.status)}
           </span>
-          ${r.status === "Pendente" ? `
+          ${
+            r.status === "Pendente"
+              ? `
             <button class="btn-confirm-pickup" data-code="${r.code}">
               ✓ Confirmar retirada
             </button>
-          ` : ""}
+          `
+              : ""
+          }
           <a class="btn-whatsapp-outline" target="_blank" rel="noopener noreferrer" href="https://wa.me/5511987654321?text=${encodeURIComponent(`Olá ${r.customerName}! Aqui é da ${r.store} sobre sua reserva ${r.code} do produto ${r.product}.`)}">
             💬 WhatsApp
           </a>
         </div>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function attachPickupConfirmEvents() {
-    mainContent.querySelectorAll(".btn-confirm-pickup").forEach(btn => {
+    mainContent.querySelectorAll(".btn-confirm-pickup").forEach((btn) => {
       btn.addEventListener("click", () => {
         const code = btn.dataset.code;
-        const res = reservations.find(r => r.code === code);
+        const res = reservations.find((r) => r.code === code);
         if (res) {
           res.status = "Concluída";
           saveStorage();
@@ -1627,10 +1806,13 @@
   // 9. TELA DO COMERCIANTE: ESTATÍSTICAS
   // --------------------------------------------------------------------------
   function renderMerchantStats() {
-    const store = stores.find(s => s.id === (currentUser ? currentUser.storeId : "banca-bueno")) || stores[0];
-    const myProds = products.filter(p => p.storeId === store.id);
-    const myRes = reservations.filter(r => r.storeId === store.id);
-    const finishedCount = myRes.filter(r => r.status === "Concluída").length;
+    const store =
+      stores.find(
+        (s) => s.id === (currentUser ? currentUser.storeId : "banca-bueno"),
+      ) || stores[0];
+    const myProds = products.filter((p) => p.storeId === store.id);
+    const myRes = reservations.filter((r) => r.storeId === store.id);
+    const finishedCount = myRes.filter((r) => r.status === "Concluída").length;
 
     mainContent.innerHTML = `
       <section class="content-section">
@@ -1660,28 +1842,40 @@
         <div class="content-section" style="border:1.5px solid var(--border-light);">
           <h3 style="font-size:1.15rem; margin-bottom:14px;">🏆 Produtos Mais Procurados pelos Clientes</h3>
           ${(() => {
-        const ranked = myProds.map(p => ({ name: p.name, reservations: myRes.filter(r => r.productId === p.id).length })).sort((a, b) => b.reservations - a.reservations).slice(0, 3);
+            const ranked = myProds
+              .map((p) => ({
+                name: p.name,
+                reservations: myRes.filter((r) => r.productId === p.id).length,
+              }))
+              .sort((a, b) => b.reservations - a.reservations)
+              .slice(0, 3);
 
-        if (!ranked.length) {
-          return `<p class="muted-info" style="padding:16px;">Ainda não há produtos cadastrados para ranquear.</p>`;
-        }
+            if (!ranked.length) {
+              return `<p class="muted-info" style="padding:16px;">Ainda não há produtos cadastrados para ranquear.</p>`;
+            }
 
-        return `
+            return `
           <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
-            ${ranked.map((item, i) => `
+            ${ranked
+              .map(
+                (item, i) => `
               <li style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafc; border-radius:8px;">
                 <strong>${i + 1}º ${escapeHTML(item.name)}</strong>
                 <span class="pill-disponivel">${item.reservations} reserva(s)</span>
               </li>
-            `).join("")}
+            `,
+              )
+              .join("")}
           </ul>
         `;
-      })()}
+          })()}
         </div>
       </section>
     `;
 
-    mainContent.querySelector("#btn-back-from-stats").addEventListener("click", () => navigateTo("merchant-dashboard"));
+    mainContent
+      .querySelector("#btn-back-from-stats")
+      .addEventListener("click", () => navigateTo("merchant-dashboard"));
   }
 
   // --------------------------------------------------------------------------
@@ -1689,7 +1883,7 @@
   // --------------------------------------------------------------------------
   function openMerchantEditModal() {
     if (!currentUser || currentUser.type !== "merchant") return;
-    const store = stores.find(s => s.id === currentUser.storeId) || stores[0];
+    const store = stores.find((s) => s.id === currentUser.storeId) || stores[0];
 
     const nameInput = document.getElementById("edit-store-name");
     const catInput = document.getElementById("edit-store-category");
@@ -1716,7 +1910,9 @@
       </div>
 
       <div class="stores-map-grid">
-        ${stores.map(s => `
+        ${stores
+          .map(
+            (s) => `
           <div class="store-map-card ${s.id === storeId ? "active-store" : ""}">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
               <span style="font-size:2rem;">${s.icon}</span>
@@ -1735,7 +1931,9 @@
               💬 Contato WhatsApp
             </a>
           </div>
-        `).join("")}
+        `,
+          )
+          .join("")}
       </div>
     `;
     mapModal.showModal();
@@ -1756,9 +1954,10 @@
         </div>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
-          ${stores.map(s => {
-      const count = products.filter(p => p.storeId === s.id).length;
-      return `
+          ${stores
+            .map((s) => {
+              const count = products.filter((p) => p.storeId === s.id).length;
+              return `
               <div class="content-section" style="border: 2px solid var(--border-light); box-shadow:none;">
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
                   <span style="font-size:2.4rem;">${s.icon}</span>
@@ -1779,13 +1978,16 @@
                 </div>
               </div>
             `;
-    }).join("")}
+            })
+            .join("")}
         </div>
       </section>
     `;
 
-    mainContent.querySelector("#btn-open-stores-map").addEventListener("click", () => openMapModalWithStore(""));
-    mainContent.querySelectorAll(".btn-store-filter-prods").forEach(b => {
+    mainContent
+      .querySelector("#btn-open-stores-map")
+      .addEventListener("click", () => openMapModalWithStore(""));
+    mainContent.querySelectorAll(".btn-store-filter-prods").forEach((b) => {
       b.addEventListener("click", () => {
         activeSearchTerm = b.dataset.storeName;
         if (searchInput) searchInput.value = activeSearchTerm;
@@ -1809,7 +2011,9 @@
         </div>
 
         <div class="products-grid">
-          ${products.map(p => `
+          ${products
+            .map(
+              (p) => `
             <article class="product-card" data-id="${p.id}">
               <div class="product-img-wrap">
                 <img src="${p.image}" alt="${escapeHTML(p.name)}" class="product-real-img">
@@ -1828,21 +2032,27 @@
                 <div class="product-price-action-row">
                   <span class="product-card-price">${formatMoney(p.price)}</span>
                   <button class="btn-reserve-action ${!currentUser || currentUser.type !== "customer" ? "locked-login" : ""}" data-product-id="${p.id}" ${p.stock < 1 ? "disabled" : ""}>
-                    ${p.stock < 1 ? "Indisponível" : (!currentUser || currentUser.type !== "customer" ? "Entrar para reservar" : "💬 Reservar")}
+                    ${p.stock < 1 ? "Indisponível" : !currentUser || currentUser.type !== "customer" ? "Entrar para reservar" : "💬 Reservar"}
                   </button>
                 </div>
               </div>
             </article>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </div>
       </section>
     `;
 
-    mainContent.querySelector("#btn-back-from-all-prods").addEventListener("click", () => navigateTo("client-home"));
-    mainContent.querySelectorAll(".btn-reserve-action").forEach(btn => {
-      btn.addEventListener("click", () => handleReserveClick(Number(btn.dataset.productId)));
+    mainContent
+      .querySelector("#btn-back-from-all-prods")
+      .addEventListener("click", () => navigateTo("client-home"));
+    mainContent.querySelectorAll(".btn-reserve-action").forEach((btn) => {
+      btn.addEventListener("click", () =>
+        handleReserveClick(Number(btn.dataset.productId)),
+      );
     });
-    mainContent.querySelectorAll(".product-card").forEach(c => {
+    mainContent.querySelectorAll(".product-card").forEach((c) => {
       c.addEventListener("click", (e) => {
         if (e.target.closest(".btn-reserve-action")) return;
         openProductDetailModal(Number(c.dataset.id));
@@ -1866,13 +2076,18 @@
           </div>
         </section>
       `;
-      mainContent.querySelector("#btn-login-cust-profile").addEventListener("click", () => openAuthModal("customer"));
-      mainContent.querySelector("#btn-login-merch-profile").addEventListener("click", () => openAuthModal("merchant"));
+      mainContent
+        .querySelector("#btn-login-cust-profile")
+        .addEventListener("click", () => openAuthModal("customer"));
+      mainContent
+        .querySelector("#btn-login-merch-profile")
+        .addEventListener("click", () => openAuthModal("merchant"));
       return;
     }
 
     if (currentUser.type === "merchant") {
-      const store = stores.find(s => s.id === currentUser.storeId) || stores[0];
+      const store =
+        stores.find((s) => s.id === currentUser.storeId) || stores[0];
       mainContent.innerHTML = `
         <section class="content-section" style="max-width:600px; margin:0 auto;">
           <div class="section-header">
@@ -1897,9 +2112,15 @@
           </div>
         </section>
       `;
-      mainContent.querySelector("#btn-logout-profile").addEventListener("click", handleLogout);
-      mainContent.querySelector("#btn-goto-merch-panel").addEventListener("click", () => navigateTo("merchant-dashboard"));
-      mainContent.querySelector("#btn-edit-store-from-profile").addEventListener("click", openMerchantEditModal);
+      mainContent
+        .querySelector("#btn-logout-profile")
+        .addEventListener("click", handleLogout);
+      mainContent
+        .querySelector("#btn-goto-merch-panel")
+        .addEventListener("click", () => navigateTo("merchant-dashboard"));
+      mainContent
+        .querySelector("#btn-edit-store-from-profile")
+        .addEventListener("click", openMerchantEditModal);
     } else {
       mainContent.innerHTML = `
         <section class="content-section" style="max-width:600px; margin:0 auto;">
@@ -1921,8 +2142,12 @@
           <button class="btn-primary" id="btn-goto-my-reservations">Ver Minhas Reservas</button>
         </section>
       `;
-      mainContent.querySelector("#btn-logout-profile").addEventListener("click", handleLogout);
-      mainContent.querySelector("#btn-goto-my-reservations").addEventListener("click", () => navigateTo("client-reservations"));
+      mainContent
+        .querySelector("#btn-logout-profile")
+        .addEventListener("click", handleLogout);
+      mainContent
+        .querySelector("#btn-goto-my-reservations")
+        .addEventListener("click", () => navigateTo("client-reservations"));
     }
   }
 
@@ -1937,9 +2162,11 @@
       return;
     }
 
-    sideReservationsList.innerHTML = recents.map(r => `
+    sideReservationsList.innerHTML = recents
+      .map(
+        (r) => `
       <div class="side-res-card-item">
-        <img src="${r.productImage || (products.find(p => p.id === r.productId)?.image) || PRODUCT_PRESETS.album}" alt="${escapeHTML(r.product)}" class="side-res-thumb">
+        <img src="${r.productImage || products.find((p) => p.id === r.productId)?.image || PRODUCT_PRESETS.album}" alt="${escapeHTML(r.product)}" class="side-res-thumb">
         <div class="side-res-info">
           <div class="side-res-title">${escapeHTML(r.product)}</div>
           <div class="side-res-store">🏪 ${escapeHTML(r.store)}</div>
@@ -1947,11 +2174,15 @@
         </div>
         <span class="pill-disponivel" style="font-size:0.7rem;">${escapeHTML(r.status)}</span>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function updateSideReservationsBadge() {
-    const activeCount = reservations.filter(r => r.status === "Pendente" || r.status === "Aguardando Retirada").length;
+    const activeCount = reservations.filter(
+      (r) => r.status === "Pendente" || r.status === "Aguardando Retirada",
+    ).length;
     if (sideResBadge) {
       sideResBadge.textContent = activeCount;
       sideResBadge.classList.toggle("hidden", activeCount === 0);
@@ -1970,13 +2201,19 @@
         deviceWrapper.classList.toggle("device-standard", !isMobileMode);
 
         // Nomes exatos solicitados pelo usuário
-        deviceModeLabel.textContent = isMobileMode ? "Modo Computador" : "Modo Celular";
-        showToast(isMobileMode ? "Visualização no Modo Celular ativada." : "Visualização no Modo Computador ativada.");
+        deviceModeLabel.textContent = isMobileMode
+          ? "Modo Computador"
+          : "Modo Celular";
+        showToast(
+          isMobileMode
+            ? "Visualização no Modo Celular ativada."
+            : "Visualização no Modo Computador ativada.",
+        );
       });
     }
 
     // Navegação Sidebar
-    document.querySelectorAll(".side-nav-item").forEach(btn => {
+    document.querySelectorAll(".side-nav-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = btn.dataset.nav;
         navigateTo(target);
@@ -1999,14 +2236,19 @@
         clearSearchBtn.classList.toggle("hidden", !val);
 
         if (val.trim().length >= 2) {
-          const matches = products.filter(p =>
-            p.name.toLowerCase().includes(val.toLowerCase()) ||
-            p.category.toLowerCase().includes(val.toLowerCase()) ||
-            p.store.toLowerCase().includes(val.toLowerCase())
-          ).slice(0, 5);
+          const matches = products
+            .filter(
+              (p) =>
+                p.name.toLowerCase().includes(val.toLowerCase()) ||
+                p.category.toLowerCase().includes(val.toLowerCase()) ||
+                p.store.toLowerCase().includes(val.toLowerCase()),
+            )
+            .slice(0, 5);
 
           if (matches.length) {
-            searchSuggestions.innerHTML = matches.map(m => `
+            searchSuggestions.innerHTML = matches
+              .map(
+                (m) => `
               <div class="suggestion-item" data-id="${m.id}">
                 <img src="${m.image}" alt="${escapeHTML(m.name)}" class="suggestion-thumb">
                 <div class="suggestion-info">
@@ -2017,16 +2259,20 @@
                   ${m.stock > 0 ? "Disponível" : "Esgotado"}
                 </span>
               </div>
-            `).join("");
+            `,
+              )
+              .join("");
             searchSuggestions.classList.remove("hidden");
 
-            searchSuggestions.querySelectorAll(".suggestion-item").forEach(item => {
-              item.addEventListener("click", () => {
-                const id = Number(item.dataset.id);
-                searchSuggestions.classList.add("hidden");
-                openProductDetailModal(id);
+            searchSuggestions
+              .querySelectorAll(".suggestion-item")
+              .forEach((item) => {
+                item.addEventListener("click", () => {
+                  const id = Number(item.dataset.id);
+                  searchSuggestions.classList.add("hidden");
+                  openProductDetailModal(id);
+                });
               });
-            });
           } else {
             searchSuggestions.classList.add("hidden");
           }
@@ -2051,32 +2297,47 @@
     }
 
     document.addEventListener("click", (e) => {
-      if (searchSuggestions && !searchSuggestions.contains(e.target) && e.target !== searchInput) {
+      if (
+        searchSuggestions &&
+        !searchSuggestions.contains(e.target) &&
+        e.target !== searchInput
+      ) {
         searchSuggestions.classList.add("hidden");
       }
     });
 
     // Modais Close
     const closeCustAuth = document.getElementById("close-customer-auth");
-    if (closeCustAuth) closeCustAuth.addEventListener("click", () => customerAuthModal.close());
+    if (closeCustAuth)
+      closeCustAuth.addEventListener("click", () => customerAuthModal.close());
 
     const closeMerchAuth = document.getElementById("close-merchant-auth");
-    if (closeMerchAuth) closeMerchAuth.addEventListener("click", () => merchantAuthModal.close());
+    if (closeMerchAuth)
+      closeMerchAuth.addEventListener("click", () => merchantAuthModal.close());
 
     const closeMerchEdit = document.getElementById("close-merchant-edit");
-    if (closeMerchEdit) closeMerchEdit.addEventListener("click", () => merchantEditModal.close());
+    if (closeMerchEdit)
+      closeMerchEdit.addEventListener("click", () => merchantEditModal.close());
 
     const cancelEditStore = document.getElementById("cancel-edit-store");
-    if (cancelEditStore) cancelEditStore.addEventListener("click", () => merchantEditModal.close());
+    if (cancelEditStore)
+      cancelEditStore.addEventListener("click", () =>
+        merchantEditModal.close(),
+      );
 
     const closeProdDetail = document.getElementById("close-product-detail");
-    if (closeProdDetail) closeProdDetail.addEventListener("click", () => productDetailModal.close());
+    if (closeProdDetail)
+      closeProdDetail.addEventListener("click", () =>
+        productDetailModal.close(),
+      );
 
     const closeResForm = document.getElementById("close-reserve-form");
-    if (closeResForm) closeResForm.addEventListener("click", () => reserveModal.close());
+    if (closeResForm)
+      closeResForm.addEventListener("click", () => reserveModal.close());
 
     const cancelResBtn = document.getElementById("cancel-reserve-btn");
-    if (cancelResBtn) cancelResBtn.addEventListener("click", () => reserveModal.close());
+    if (cancelResBtn)
+      cancelResBtn.addEventListener("click", () => reserveModal.close());
 
     const closeMap = document.getElementById("close-map-modal");
     if (closeMap) closeMap.addEventListener("click", () => mapModal.close());
@@ -2099,7 +2360,9 @@
     if (resQtyInc) {
       resQtyInc.addEventListener("click", () => {
         let val = parseInt(resQtyInput.value, 10) || 1;
-        const max = selectedProductForReserve ? selectedProductForReserve.stock : 99;
+        const max = selectedProductForReserve
+          ? selectedProductForReserve.stock
+          : 99;
         if (val < max) {
           resQtyInput.value = val + 1;
           updateReserveFormSummary();
@@ -2116,8 +2379,12 @@
         e.preventDefault();
         if (!selectedProductForReserve) return;
 
-        const custName = document.getElementById("reserve-customer-name").value.trim();
-        const custPhone = document.getElementById("reserve-customer-phone").value.trim();
+        const custName = document
+          .getElementById("reserve-customer-name")
+          .value.trim();
+        const custPhone = document
+          .getElementById("reserve-customer-phone")
+          .value.trim();
         const qty = parseInt(resQtyInput.value, 10) || 1;
 
         if (qty > selectedProductForReserve.stock) {
@@ -2150,7 +2417,7 @@
           totalPrice,
           status: "Pendente",
           deadline,
-          createdAt: formatDateTimeBR(new Date())
+          createdAt: formatDateTimeBR(new Date()),
         };
 
         reservations.unshift(newReservation);
@@ -2159,13 +2426,18 @@
         reserveModal.close();
 
         // Tela de Sucesso (Esboço Celular Tela 3)
-        document.getElementById("success-product-title").textContent = "Reserva realizada!";
-        document.getElementById("success-store-info").textContent = `Seu item foi reservado na ${selectedProductForReserve.store}.`;
-        document.getElementById("success-voucher-code").textContent = voucherCode;
-        document.getElementById("success-voucher-deadline").textContent = `Retire até: ${deadline}`;
+        document.getElementById("success-product-title").textContent =
+          "Reserva realizada!";
+        document.getElementById("success-store-info").textContent =
+          `Seu item foi reservado na ${selectedProductForReserve.store}.`;
+        document.getElementById("success-voucher-code").textContent =
+          voucherCode;
+        document.getElementById("success-voucher-deadline").textContent =
+          `Retire até: ${deadline}`;
 
         const wppMsg = `Olá, ${selectedProductForReserve.store}! Fiz a reserva ${voucherCode} do produto "${selectedProductForReserve.name}" pelo Tem Aí? Tem Aqui! e gostaria de confirmar a retirada.`;
-        document.getElementById("success-whatsapp-link").href = `https://wa.me/5511987654321?text=${encodeURIComponent(wppMsg)}`;
+        document.getElementById("success-whatsapp-link").href =
+          `https://wa.me/5511987654321?text=${encodeURIComponent(wppMsg)}`;
 
         reserveSuccessModal.showModal();
         renderSideReservationsWidget();
@@ -2184,10 +2456,14 @@
 
     // Mapa Full
     const btnOpenFullMap = document.getElementById("btn-open-full-map");
-    if (btnOpenFullMap) btnOpenFullMap.addEventListener("click", () => openMapModalWithStore(""));
+    if (btnOpenFullMap)
+      btnOpenFullMap.addEventListener("click", () => openMapModalWithStore(""));
 
     const btnSideViewAllRes = document.getElementById("btn-side-view-all-res");
-    if (btnSideViewAllRes) btnSideViewAllRes.addEventListener("click", () => navigateTo("client-reservations"));
+    if (btnSideViewAllRes)
+      btnSideViewAllRes.addEventListener("click", () =>
+        navigateTo("client-reservations"),
+      );
   }
 
   // ==========================================================================
@@ -2245,7 +2521,7 @@
           type: "customer",
           name: "Maria da Silva",
           email: "cliente@exemplo.com",
-          phone: "(11) 98765-1122"
+          phone: "(11) 98765-1122",
         };
         saveStorage();
         customerAuthModal.close();
@@ -2266,7 +2542,7 @@
           storeName: "Banca Bueno",
           storeId: "banca-bueno",
           email: "banca@exemplo.com",
-          phone: "(11) 98256-5530"
+          phone: "(11) 98256-5530",
         };
         saveStorage();
         merchantAuthModal.close();
@@ -2286,7 +2562,7 @@
           type: "customer",
           name: email.split("@")[0] || "Cliente",
           email: email,
-          phone: "(11) 99999-8888"
+          phone: "(11) 99999-8888",
         };
         saveStorage();
         customerAuthModal.close();
@@ -2309,7 +2585,7 @@
           type: "customer",
           name,
           email,
-          phone
+          phone,
         };
         users.push(currentUser);
         saveStorage();
@@ -2325,17 +2601,20 @@
       formMerchLogin.addEventListener("submit", (e) => {
         e.preventDefault();
         const email = document.getElementById("merch-login-email").value.trim();
-        const store = stores.find(s => s.email === email) || stores[0];
+        const store = stores.find((store) => store.email === email);
+
+        if (!store) {
+          showToast("Usuário não Encontrado");
+        }
 
         currentUser = {
           id: "usr-" + Date.now(),
           type: "merchant",
           name: "Lojista",
-          storeName: store.name,
-          storeId: store.id,
           email: email,
-          phone: store.phone
+          ...{ storeName: store.name, storeId: store.id, ...store },
         };
+
         saveStorage();
         merchantAuthModal.close();
         updateUserSessionUI();
@@ -2348,10 +2627,19 @@
     if (formMerchReg) {
       formMerchReg.addEventListener("submit", (e) => {
         e.preventDefault();
-        const storeName = document.getElementById("merch-reg-store-name").value.trim();
+        const storeName = document
+          .getElementById("merch-reg-store-name")
+          .value.trim();
         const category = document.getElementById("merch-reg-category").value;
         const phone = document.getElementById("merch-reg-phone").value.trim();
-        const address = document.getElementById("merch-reg-address").value.trim();
+        const address = document
+          .getElementById("merch-reg-address")
+          .value.trim();
+        const cep = document.getElementById("merch-reg-cep").value.trim();
+        const number = document.getElementById("merch-reg-number").value.trim();
+        const complement = document
+          .getElementById("merch-reg-complement")
+          .value.trim();
         const email = document.getElementById("merch-reg-email").value.trim();
 
         const newStoreId = "store-" + Date.now();
@@ -2360,13 +2648,20 @@
           name: storeName,
           category,
           distance: "800 m",
-          address: address, // Endereço real referenciado no mapa
+          address,
+          cep,
+          number,
+          complement,
           phone,
-          icon: category.includes("Banca") ? "🏪" : (category.includes("Papelaria") ? "✏️" : "📚"),
+          icon: category.includes("Banca")
+            ? "🏪"
+            : category.includes("Papelaria")
+              ? "✏️"
+              : "📚",
           thumb: PRODUCT_PRESETS.album,
           status: "Aberta",
           email,
-          realCoordinates: "Endereço cadastrado"
+          realCoordinates: "Endereço cadastrado",
         };
 
         stores.push(newStore);
@@ -2378,7 +2673,11 @@
           storeName: storeName,
           storeId: newStoreId,
           email,
-          phone
+          phone,
+          address,
+          cep,
+          number,
+          complement,
         };
         users.push(currentUser);
         saveStorage();
@@ -2396,12 +2695,18 @@
       formMerchEdit.addEventListener("submit", (e) => {
         e.preventDefault();
         if (!currentUser || currentUser.type !== "merchant") return;
-        const store = stores.find(s => s.id === currentUser.storeId);
+        const store = stores.find((s) => s.id === currentUser.storeId);
         if (store) {
-          const newName = document.getElementById("edit-store-name").value.trim();
+          const newName = document
+            .getElementById("edit-store-name")
+            .value.trim();
           const newCat = document.getElementById("edit-store-category").value;
-          const newPhone = document.getElementById("edit-store-phone").value.trim();
-          const newAddr = document.getElementById("edit-store-address").value.trim();
+          const newPhone = document
+            .getElementById("edit-store-phone")
+            .value.trim();
+          const newAddr = document
+            .getElementById("edit-store-address")
+            .value.trim();
 
           store.name = newName;
           store.category = newCat;
@@ -2410,7 +2715,7 @@
           currentUser.storeName = newName;
 
           // Atualiza também nos produtos dessa loja
-          products.forEach(p => {
+          products.forEach((p) => {
             if (p.storeId === store.id) p.store = newName;
           });
 
@@ -2418,7 +2723,9 @@
           merchantEditModal.close();
           updateUserSessionUI();
           renderMerchantDashboard();
-          showToast(`Dados da loja e endereço no mapa atualizados com sucesso!`);
+          showToast(
+            `Dados da loja e endereço no mapa atualizados com sucesso!`,
+          );
         }
       });
     }
@@ -2430,5 +2737,15 @@
   } else {
     init();
   }
-
 })();
+
+async function consultaCep(value) {
+  const numbers = value.replace("-", "");
+  if (numbers.length != 8) return;
+  const url = new URL(`https://viacep.com.br/ws/${numbers}/json/`);
+  const request = await fetch(url);
+  const response = await request.json();
+  const addrImput = document.getElementById("merch-reg-address");
+  const { logradouro, bairro, localidade, uf } = response;
+  addrImput.value = `${logradouro} - ${bairro} - ${localidade}/${uf}`;
+}

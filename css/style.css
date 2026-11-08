@@ -1683,6 +1683,10 @@ img {
   box-shadow: 0 0 0 3px rgba(7, 78, 166, 0.15);
 }
 
+.form-group [readonly]{
+  opacity: 0.5;
+}
+
 .form-row {
   display: flex;
   gap: 16px;
@@ -2207,7 +2211,8 @@ img {
   transform: translateY(16px);
   transition: all var(--transition-fast);
   pointer-events: none;
-  z-index: 1000;
+  z-index: 99999;
+  isolation: isolate;
 }
 
 .toast.show {

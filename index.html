@@ -362,9 +362,24 @@ d='M12 18L14 13H34L36 18H12Z' fill='%23FFB703'/%3E%3C/svg%3E">
         </div>
 
         <div class="form-group">
-          <label for="merch-reg-address">Endereço Real Completo (Rua, Número, Bairro, Cidade):</label>
-          <input type="text" id="merch-reg-address" required placeholder="Ex.: Rua das Flores, 150 — Heliópolis, São Paulo - SP">
+          <label for="merch-reg-cep">CEP:</label>
+          <input type="text" id="merch-reg-cep" required placeholder="04242-039" onchange="consultaCep(this.value)">
+        </div>
+        <div class="form-group">
+          <label for="merch-reg-address">Endereço (Rua, Número, Bairro, Cidade):</label>
+          <input type="text" id="merch-reg-address" required readonly placeholder="Ex.: Rua das Flores, 150 — Heliópolis, São Paulo - SP">
           <small class="field-hint">Este endereço real será referenciado no mapa para os clientes encontrarem sua loja.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="merch-reg-number">Número:</label>
+          <input type="number" id="merch-reg-number">
+          
+        </div>
+
+        <div class="form-group">
+          <label for="merch-reg-complement">Complemento:</label>
+          <input type="text" id="merch-reg-complement" placeholder="Ex.: Bloco, Casa, Fundos">
         </div>
 
         <div class="form-row">
