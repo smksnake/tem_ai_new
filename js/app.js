@@ -497,10 +497,8 @@
     // 1. Atualiza cabeçalho superior e barra de utilitários
     if (currentUser) {
       if (currentUser.type === "merchant") {
-        // Logado como Comerciante
         authQuickActions.innerHTML = `
           <span style="color:#86efac; font-weight:700;">🏪 ${escapeHTML(currentUser.storeName || "Minha Loja")}</span>
-          <button class="utility-btn" id="quick-logout-btn">Sair</button>
         `;
         userHeaderProfile.innerHTML = `
           <div class="logged-user-pill">
@@ -512,13 +510,10 @@
             <button class="btn-logout-small" id="header-logout-btn" title="Encerrar sessão">Sair</button>
           </div>
         `;
-        // Exibe o link do Modo Comerciante na barra lateral
         if (sideNavMerchant) sideNavMerchant.classList.remove("hidden");
       } else {
-        // Logado como Cliente
         authQuickActions.innerHTML = `
           <span style="color:#bae6fd; font-weight:600;">Olá, ${escapeHTML(currentUser.name)}</span>
-          <button class="utility-btn" id="quick-logout-btn">Sair</button>
         `;
         userHeaderProfile.innerHTML = `
           <div class="logged-user-pill">
@@ -530,15 +525,11 @@
             <button class="btn-logout-small" id="header-logout-btn" title="Encerrar sessão">Sair</button>
           </div>
         `;
-        // Oculta Modo Comerciante para clientes
         if (sideNavMerchant) sideNavMerchant.classList.add("hidden");
       }
     } else {
-      // Deslogado (Visitante)
-      authQuickActions.innerHTML = `
-        <button class="utility-btn" id="quick-login-cust-btn">Entrar como Cliente</button>
-        <button class="utility-btn" id="quick-login-merch-btn" style="background:#0284c7; border-color:#0284c7;">Sou Comerciante</button>
-      `;
+      // Deslogado (Visitante): botões SÓ no topbar branco.
+      authQuickActions.innerHTML = "";
       userHeaderProfile.innerHTML = `
         <button class="btn-header-login" id="header-login-cust-btn">
           <span>👤</span> Entrar
@@ -547,11 +538,9 @@
           <span>🏪</span> Sou Comerciante
         </button>
       `;
-      // Oculta Modo Comerciante para deslogados
       if (sideNavMerchant) sideNavMerchant.classList.add("hidden");
     }
 
-    // Reanexa eventos aos novos botões gerados
     attachAuthButtonEvents();
     renderMobileBottomNav();
   }
