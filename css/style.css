@@ -240,7 +240,7 @@ img {
 }
 
 /* ==========================================================================
-   CABEÇALHO PRINCIPAL (TOPBAR - ESBOÇO DESKTOP)
+   CABEÇALHO PRINCIPAL (TOPBAR - DESKTOP)
    ========================================================================== */
 .topbar {
   background: var(--bg-card);
@@ -262,7 +262,7 @@ img {
   gap: 16px;
 }
 
-/* Logotipo Fiel ao Esboço */
+/* Logotipo  */
 .brand {
   display: flex;
   align-items: center;
@@ -588,7 +588,7 @@ img {
 }
 
 /* ==========================================================================
-   LAYOUT GRID PRINCIPAL (DESKTOP - ESBOÇO FIGURA 1)
+   LAYOUT GRID PRINCIPAL 
    ========================================================================== */
 .app-layout {
   display: grid;
@@ -2277,6 +2277,137 @@ img {
   }
   .categories-circles-row {
     justify-content: flex-start;
+  }
+}
+/* ==========================================================================
+   SINO DE NOTIFICAÇÕES (DROPDOWN)
+   ========================================================================== */
+.notif-wrapper {
+  position: relative;
+}
+
+.notif-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 340px;
+  max-height: 420px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  animation: notifFadeIn 0.15s ease;
+}
+
+@keyframes notifFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.notif-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+  background: #f8fafc;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.notif-panel-header strong {
+  font-size: 0.95rem;
+  color: var(--ink-900);
+}
+
+.notif-panel-body {
+  padding: 6px 0;
+}
+
+.notif-empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--ink-500);
+  font-size: 0.88rem;
+}
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.notif-item:last-child {
+  border-bottom: none;
+}
+
+.notif-item:hover {
+  background: var(--primary-light);
+}
+
+.notif-item.unread {
+  background: #eff6ff;
+}
+
+.notif-item-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #0369a1;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.notif-item.unread .notif-item-icon {
+  background: var(--primary);
+  color: #fff;
+}
+
+.notif-item-content {
+  flex: 1;
+  line-height: 1.35;
+}
+
+.notif-item-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 2px;
+}
+
+.notif-item-text {
+  font-size: 0.8rem;
+  color: var(--ink-600, var(--ink-700));
+}
+
+.notif-item-time {
+  font-size: 0.72rem;
+  color: var(--ink-400);
+  margin-top: 3px;
+}
+
+/* Ajuste do topbar em modo celular simulado: o painel fica mais estreito */
+#device-wrapper.device-mobile .notif-panel {
+  width: 300px;
+  right: -60px;
+}
+
+/* Responsivo real (telas pequenas): painel quase full-width */
+@media (max-width: 768px) {
+  .notif-panel {
+    position: fixed;
+    top: 60px;
+    right: 12px;
+    left: 12px;
+    width: auto;
   }
 }
 /* Respeita a preferência do usuário por menos animação (acessibilidade) */

@@ -416,6 +416,231 @@
     setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
+  // ==========================================================================
+  // SISTEMA DE NOTIFICAÇÕES
+  // ==========================================================================
+
+  /** Notificações descartadas (lidas), persistidas no localStorage */
+  let readNotifications = loadStorage("temai_notif_read", []);
+
+  /**
+   * Deriva a lista de notificações do estado atual do app.
+   * Cada notificação tem { id, icon, title, text, time, targetNav }.
+   */
+  function buildNotifications() {
+    const list = [];
+
+    if (!currentUser) {
+      // Visitante: só uma dica de boas-vindas
+      list.push({
+        id: "welcome-guest",
+        icon: "👋",
+        title: "Bem-vindo ao Tem Aí? Tem Aqui!",
+        text: "Entre como cliente para reservar produtos do comércio local.",
+        time: "Agora",
+        targetNav: null,
+        action: "login-customer",
+      });
+
+      // Higiene: descarta IDs de notificações lidas que não existem mais.
+      // Faz isso uma vez a cada chamada, é barato e evita crescimento infinito.
+      const currentIds = new Set(list.map((n) => n.id));
+      const before = readNotifications.length;
+      readNotifications = readNotifications.filter((id) => currentIds.has(id));
+      if (readNotifications.length !== before) saveReadNotifications();
+
+      return list;
+    }
+
+    if (currentUser.type === "customer") {
+      // Reservas pendentes do cliente
+      const myActive = reservations.filter(
+        (r) =>
+          r.customerId === currentUser.id &&
+          (r.status === "Pendente" || r.status === "Aguardando Retirada"),
+      );
+      myActive.forEach((r) => {
+        list.push({
+          id: `res-pending-${r.code}`,
+          icon: "🎟️",
+          title: "Reserva aguardando retirada",
+          text: `${r.product} na ${r.store} — código ${r.code}.`,
+          time: r.deadline || "Confira o prazo",
+          targetNav: "client-reservations",
+        });
+      });
+
+      // Reservas confirmadas (prontas para retirar)
+      const confirmed = reservations.filter(
+        (r) => r.customerId === currentUser.id && r.status === "Confirmada",
+      );
+      confirmed.forEach((r) => {
+        list.push({
+          id: `res-confirmed-${r.code}`,
+          icon: "✅",
+          title: "Reserva confirmada pela loja",
+          text: `${r.product} já pode ser retirado na ${r.store}.`,
+          time: r.deadline || "",
+          targetNav: "client-reservations",
+        });
+      });
+    }
+
+    if (currentUser.type === "merchant") {
+      const myStoreId = currentUser.storeId;
+
+      // Reservas pendentes recebidas
+      const pendingForStore = reservations.filter(
+        (r) => r.storeId === myStoreId && r.status === "Pendente",
+      );
+      pendingForStore.forEach((r) => {
+        list.push({
+          id: `merch-res-${r.code}`,
+          icon: "📦",
+          title: "Nova reserva recebida",
+          text: `${r.customerName} reservou ${r.product} (${r.quantity} un.). Código ${r.code}.`,
+          time: r.createdAt || "",
+          targetNav: "merchant-reservations",
+        });
+      });
+
+      // Produtos esgotados
+      const outOfStock = products.filter(
+        (p) => p.storeId === myStoreId && p.stock === 0,
+      );
+      outOfStock.slice(0, 3).forEach((p) => {
+        list.push({
+          id: `merch-out-${p.id}`,
+          icon: "⚠️",
+          title: "Produto esgotado",
+          text: `${p.name} está sem estoque. Atualize para não perder vendas.`,
+          time: "Atenção",
+          targetNav: "merchant-products",
+        });
+      });
+    }
+
+    return list;
+  }
+
+  /** Retorna notificações ainda não marcadas como lidas */
+  function getUnreadNotifications() {
+    return buildNotifications().filter(
+      (n) => !readNotifications.includes(n.id),
+    );
+  }
+
+  /** Atualiza o badge do sino */
+  function updateNotificationBadge() {
+    const badge = document.getElementById("notif-badge");
+    if (!badge) return;
+    const count = getUnreadNotifications().length;
+    badge.textContent = count > 9 ? "9+" : String(count);
+    badge.classList.toggle("hidden", count === 0);
+  }
+
+  /** Renderiza o painel de notificações */
+  function renderNotificationsPanel() {
+    const body = document.getElementById("notif-panel-body");
+    if (!body) return;
+
+    const all = buildNotifications();
+
+    if (all.length === 0) {
+      body.innerHTML = `<div class="notif-empty">🔕<br>Nenhuma notificação no momento.</div>`;
+      return;
+    }
+
+    body.innerHTML = all
+      .map((n) => {
+        const isUnread = !readNotifications.includes(n.id);
+        return `
+        <div class="notif-item ${isUnread ? "unread" : ""}" data-notif-id="${escapeHTML(n.id)}" data-target-nav="${escapeHTML(n.targetNav || "")}" data-action="${escapeHTML(n.action || "")}">
+          <div class="notif-item-icon">${n.icon}</div>
+          <div class="notif-item-content">
+            <div class="notif-item-title">${escapeHTML(n.title)}</div>
+            <div class="notif-item-text">${escapeHTML(n.text)}</div>
+            <div class="notif-item-time">${escapeHTML(n.time || "")}</div>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+
+    // Eventos de clique em cada item
+    body.querySelectorAll(".notif-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const id = item.dataset.notifId;
+        const nav = item.dataset.targetNav;
+        const action = item.dataset.action;
+
+        // Marca como lida
+        if (!readNotifications.includes(id)) {
+          readNotifications.push(id);
+          saveReadNotifications();
+        }
+
+        // Fecha o painel
+        closeNotificationsPanel();
+
+        // Ação
+        if (action === "login-customer") {
+          openAuthModal("customer");
+        } else if (nav) {
+          navigateTo(nav);
+        } else {
+          updateNotificationBadge();
+        }
+      });
+    });
+  }
+
+  function saveReadNotifications() {
+    try {
+      localStorage.setItem(
+        "temai_notif_read",
+        JSON.stringify(readNotifications),
+      );
+    } catch (err) {
+      console.warn("[notifications] Não foi possível persistir leituras.", err);
+    }
+  }
+
+  function openNotificationsPanel() {
+    const panel = document.getElementById("notifications-panel");
+    const btn = document.getElementById("notifications-btn");
+    if (!panel || !btn) return;
+    renderNotificationsPanel();
+    panel.classList.remove("hidden");
+    btn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeNotificationsPanel() {
+    const panel = document.getElementById("notifications-panel");
+    const btn = document.getElementById("notifications-btn");
+    if (!panel || !btn) return;
+    panel.classList.add("hidden");
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleNotificationsPanel() {
+    const panel = document.getElementById("notifications-panel");
+    if (!panel) return;
+    panel.classList.contains("hidden")
+      ? openNotificationsPanel()
+      : closeNotificationsPanel();
+  }
+
+  /** Atualiza badge + fecha painel ao trocar de sessão */
+  function refreshNotificationsUI() {
+    updateNotificationBadge();
+    // Se o painel estiver aberto, re-renderiza
+    const panel = document.getElementById("notifications-panel");
+    if (panel && !panel.classList.contains("hidden")) {
+      renderNotificationsPanel();
+    }
+  }
+
   // ELEMENTOS DO DOM
   const mainContent = document.getElementById("main-content");
   const deviceWrapper = document.getElementById("device-wrapper");
@@ -453,6 +678,7 @@
     updateUserSessionUI();
     renderSideReservationsWidget();
     renderCurrentView();
+    refreshNotificationsUI();
   }
 
   // Migração/Sincronização de dados persistidos no localStorage
@@ -543,6 +769,7 @@
 
     attachAuthButtonEvents();
     renderMobileBottomNav();
+    refreshNotificationsUI();
   }
 
   function attachAuthButtonEvents() {
@@ -1212,6 +1439,7 @@
             saveStorage();
             renderSideReservationsWidget();
             renderClientReservations();
+            refreshNotificationsUI();
             showToast(`Reserva ${code} cancelada.`);
           }
         }
@@ -1350,7 +1578,15 @@
         if (res) {
           res.status = "Concluída";
           saveStorage();
+          renderMerchantReservationsList();
+          refreshNotificationsUI();
+          showToast(`Reserva ${code} concluída.`);
+        }
+        if (res) {
+          res.status = "Concluída";
+          saveStorage();
           renderMerchantDashboard();
+          refreshNotificationsUI();
           showToast(`Reserva ${code} entregue com sucesso.`);
         }
       });
@@ -1358,7 +1594,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // 6. TELA DO COMERCIANTE: MEUS PRODUTOS (ESBOÇO CELULAR TELA 3)
+  // 6. TELA DO COMERCIANTE: MEUS PRODUTOS
   // --------------------------------------------------------------------------
   function renderMerchantProductsList() {
     const store =
@@ -1443,6 +1679,7 @@
     const tagEl = document.getElementById(`stock-tag-${prodId}`);
     if (tagEl) tagEl.textContent = `${prod.stock} disponíveis`;
 
+    refreshNotificationsUI();
     showToast(`Estoque de "${prod.name}": ${prod.stock} un.`);
   }
 
@@ -2177,6 +2414,45 @@
   // ==========================================================================
   function setupGlobalListeners() {
     // Alternador de Dispositivo: "Modo Celular" <-> "Modo Computador"
+
+    // --- Sino de notificações ---
+    const notifBtn = document.getElementById("notifications-btn");
+    if (notifBtn) {
+      notifBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleNotificationsPanel();
+      });
+    }
+
+    const markAllReadBtn = document.getElementById("notif-mark-all-read");
+    if (markAllReadBtn) {
+      markAllReadBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const all = buildNotifications();
+        all.forEach((n) => {
+          if (!readNotifications.includes(n.id)) readNotifications.push(n.id);
+        });
+        saveReadNotifications();
+        updateNotificationBadge();
+        renderNotificationsPanel();
+        showToast("Todas as notificações foram marcadas como lidas.");
+      });
+    }
+
+    // Fecha o painel ao clicar fora
+    document.addEventListener("click", (e) => {
+      const panel = document.getElementById("notifications-panel");
+      const btn = document.getElementById("notifications-btn");
+      if (!panel || !btn) return;
+      if (
+        !panel.classList.contains("hidden") &&
+        !panel.contains(e.target) &&
+        !btn.contains(e.target)
+      ) {
+        closeNotificationsPanel();
+      }
+    });
+
     if (deviceToggleBtn) {
       deviceToggleBtn.addEventListener("click", () => {
         isMobileMode = !isMobileMode;
@@ -2425,6 +2701,7 @@
         reserveSuccessModal.showModal();
         renderSideReservationsWidget();
         renderCurrentView();
+        refreshNotificationsUI();
         showToast(`Reserva ${voucherCode} realizada com sucesso!`);
       });
     }
