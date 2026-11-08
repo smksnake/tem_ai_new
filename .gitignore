@@ -1,1 +1,29 @@
-.vscode/launch.json
+# Dependências
+node_modules/
+package-lock.json
+
+# Configurações pessoais de editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de SO
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variáveis de ambiente
+.env
+.env.local
+
+# Build (se usar no futuro)
+dist/
+build/
+
+# Cache
+.cache/
